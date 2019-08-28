@@ -1,0 +1,34 @@
+class Solution:
+    def removeOuterParentheses(self, S):
+        
+        #If its an empty string return None
+        if not S:
+            return None
+        
+        #Temporary list to facilitate movement of substrings of S to the output String
+        temp = []
+        # Variables to count inner and outer paranthesis
+        outer = 0
+        inner = 0
+        #output String
+        out = ""
+        
+        for i in S:
+            current = i
+            if current == "(":
+                outer+=1
+            else:
+                inner+=1
+            temp.append(current)
+            
+            if outer==inner:
+                del temp[0]
+                del temp[-1]
+                if temp:
+                    for p in temp:
+                        out += p
+                    temp.clear()
+                    outer=0
+                    inner=0
+            
+        return out
