@@ -1,0 +1,7 @@
+def printNos(i, N):
+    if i == N:
+        print(N, end="")
+        return
+    print((N-(N-i)), end=" ")
+    i+=1
+    return printNos(i, N)
