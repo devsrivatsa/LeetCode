@@ -1,0 +1,9 @@
+class Solution:
+    def RecursivePower(self, n, p, mul=None):
+        if not mul:
+            mul = n
+        if p == 1:
+            return n
+        if p == 0:
+            return 1
+        return self.RecursivePower(n*mul, p-1, mul)
