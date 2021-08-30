@@ -1,0 +1,33 @@
+import math
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        siz = len(nums)
+        if siz == 2:
+            return [0, 1]
+        else:
+            for i in range(siz):
+                elm = target - nums[i]
+                
+                arr2 = nums.copy()
+                arr2.pop(i)
+                arr = sorted(arr2)                
+                siz2 = siz-1
+                
+                low=0
+                high= siz2-1
+                
+                while siz2 >=0:
+                    if low > high:
+                        break
+                    mid=math.floor(((high+low)/2))
+                    #print(elm, arr, low, high, mid)
+                    if arr[mid] == elm:
+                        idx2 = arr2.index(elm)+1
+                        return [idx2, i] if idx2 < i else [i, idx2]
+                    if arr[mid] > elm:
+                        high = mid-1
+                    if arr[mid] < elm:
+                        low = mid+1
+                    
+                    siz2-=1
+                
