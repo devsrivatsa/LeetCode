@@ -1,0 +1,63 @@
+def searchRange(self, nums: List[int], target: int) -> List[int]:
+    if len(nums) == 0:
+        return [-1, -1]
+    elif (len(nums) == 1) and (nums[0]==target):
+        return [0, 0]
+    elif (len(nums) == 2):
+        if (nums[0]==target) and (nums[1]==target):
+            return [0,1]
+        elif (nums[0]==target) and (nums[1]!=target):
+            return [0,0]
+        elif (nums[0]!=target) and (nums[1]==target):
+            return [1,1]
+        else:
+            return [-1,-1]
+    else:
+        left=0
+        right=len(nums)-1
+        li=None
+        ri=None
+        ##finding the left end
+        while left <= right:
+            mid = (left+right)//2
+            if nums[mid] == target:
+                if mid==0:
+                    li=mid
+                    break 
+                elif (nums[mid-1] != target):
+                    li=mid
+                    break 
+                else:
+                    right = mid-1
+            elif nums[mid] > target:
+                right=mid-1
+            else:
+                left=mid+1
+
+        ##did not find a left index
+        if left > right:
+            li=-1
+
+        ##finding the right end
+        left=0
+        right=len(nums)-1
+        while left <= right:
+            mid = (left+right)//2
+            if nums[mid] == target:
+                if mid==len(nums)-1:
+                    ri=mid
+                    break
+                elif (nums[mid+1] != target):
+                    ri=mid
+                    break
+                else:
+                    left = mid+1
+            elif nums[mid] > target:
+                right=mid-1
+            else:
+                left=mid+1
+
+         ##did not find a right index
+        if left > right:
+            ri=-1
+        return [li, ri]
