@@ -1,0 +1,20 @@
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        translate = {"I":1, "V":5, "X":10, "L":50, "C":100, "D":500, "M":1000}
+        s = [i for i in s]
+        final = translate[s[0]]
+        prev = translate[s[0]]
+        cur=0
+        
+        for i in range(0, len(s)):
+            if i==0:
+                continue
+            cur = translate[s[i]]
+            if prev >= cur:
+                final += cur
+            else:
+                final = final + (cur - 2*prev)
+            
+            prev = cur
+        
+        return final
