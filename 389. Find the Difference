@@ -1,0 +1,8 @@
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        if len(t) == 1:
+            return t
+        return sorted(
+            Counter(s+t).most_common(),
+            key=lambda x: x[1]%2!=0
+        )[-1][0]
