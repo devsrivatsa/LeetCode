@@ -1,0 +1,21 @@
+class Solution:
+    def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        if len(logs) == 1:
+            return logs
+        else:
+            list_l = []
+            list_d = []
+            for log in logs:
+                if log.split(' ')[1].isdigit():
+                    list_d.append(log)
+                else:
+                    log_l = log.split(' ')
+                    log_l = [log_l[0], " ".join(log_l[1:])]
+                    list_l.append(log_l)
+
+            list_l.sort(key=lambda x: (x[1], x[0]))
+            list_l = [" ".join(log) for log in list_l]
+            if list_d:
+                return list_l + list_d
+            else:
+                return list_l
