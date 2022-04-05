@@ -1,0 +1,9 @@
+class Solution:
+    def sortSentence(self, s: str) -> str:
+        kvp = {}
+        for word in s.split(" "):
+            kvp[int(word[-1])] = word[0:-1]
+        orig_sent=""
+        for k in sorted(kvp.keys()):
+            orig_sent += kvp[k]+" "
+        return orig_sent.strip()
