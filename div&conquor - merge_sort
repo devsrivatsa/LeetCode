@@ -1,0 +1,26 @@
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        if len(nums) <= 1:
+            return nums
+        pivot = len(nums)//2
+        left_list = self.sortArray(nums[0:pivot])
+        right_list = self.sortArray(nums[pivot:])
+        return self.merge(left_list, right_list)
+    
+    def merge(self,ll,rl):
+        left_ptr = right_ptr = 0
+        ret = []
+        while (left_ptr < len(ll)) and (right_ptr < len(rl)):
+            if ll[left_ptr] < rl[right_ptr]:
+                ret.append(ll[left_ptr])
+                left_ptr += 1
+            else:
+                ret.append(rl[right_ptr])
+                right_ptr += 1
+        
+        ret.extend(ll[left_ptr:])
+        ret.extend(rl[right_ptr:])
+        
+        return ret  
+
+        
