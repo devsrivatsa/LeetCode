@@ -1,0 +1,42 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    parent=[]
+    level = []
+    def inorder_get_parent_and_level(self, root, parent, level, elm):
+        if not root:
+            return None
+        self.inorder_get_parent_and_level(root.left, root, level+1, elm)
+        if root.val == elm:
+            #print(root.val, parent, elm)
+            if parent==None:
+                self.parent.append(0)
+                self.level.append(level)
+            else:
+                self.parent.append(parent.val)
+                self.level.append(level)
+        self.inorder_get_parent_and_level(root.right, root, level+1, elm)
+        
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+    """
+    The foll 2 lines are necessary for leetcode as 
+    the object of class Solution is only created once and values get piled up in global variables for each testcase.
+    Hence these are being reseted each time for a new test case
+    """    
+        self.parent=[] 
+        self.level = []
+        self.inorder_get_parent_and_level(root, None, 0, x)
+        self.inorder_get_parent_and_level(root, None, 0, y)
+        if self.parent[0] == self.parent[1]:
+            return False
+        else:
+            if self.level[0] == self.level[1]:
+                return True
+            else:
+                return False
+            
