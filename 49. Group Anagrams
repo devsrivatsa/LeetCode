@@ -8,3 +8,23 @@ class Solution:
             else:
                 pairing[t] = [w]
         return pairing.values()
+        
+        
+#################################################################################################
+                                    Javascript Solution
+#################################################################################################
+
+
+var groupAnagrams = function(strs) {
+    pairings = {};
+    for (let w of strs) {
+        var temp = w.split('').sort().join('');
+        if (pairings[temp]!=undefined) {
+            pairings[temp].push(w);
+        } else {
+            pairings[temp] = [w];
+        }
+    }
+    return Object.values(pairings);
+    
+};
