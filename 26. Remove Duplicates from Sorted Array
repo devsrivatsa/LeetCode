@@ -1,0 +1,53 @@
+class Solution(object):
+    def removeDuplicates(self, a):
+        for i in a:
+            end = a.count(i)
+            if end>1:
+                del a[a.index(i):(a.index(i)+end-1)]
+            
+        return len(a)
+        
+        
+        
+---------------------c#----------------------
+public class Solution {
+    public int RemoveDuplicates(int[] nums) {
+        int ci;
+        int pi;
+        int si = -2200;
+        int prev = -2200;
+        
+        int final = 0;
+        
+        int i=1;
+        while(i<nums.Length) {
+            ci = i;
+            pi = ci-1;
+            if ((nums[ci] == nums[pi]) && (si == -2200)) si = ci;
+            
+            while ((nums[ci] == nums[pi]) && (i < nums.Length-1)) {
+                ci++;
+                i++;
+            }
+            
+            if (nums[ci] != nums[pi]) {
+                if (si != -2200) {
+                    nums[si] = nums[ci];
+                    si+=1;
+                } 
+                else si = -2200; 
+            }
+            i++;
+        }
+        
+        
+        foreach (int k in nums) {
+            if (k > prev) {
+                final+=1;
+                prev=k;
+            }
+            else break;
+        }
+        return final;
+    }
+}
