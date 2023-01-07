@@ -1,0 +1,84 @@
+
+
+
+
+//////////////////////////////////////////////////////////////C# Solution//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public class Solution {
+
+    int ModifiedBinarySearch(int[] nums, int target) {
+        int low=0;
+        int high=nums.Length-1;
+        int mid = -1;
+        while (low <= high) {
+            mid = (high+low)/2;
+            if (nums[mid] == target) return mid; 
+            else if (nums[mid] < target) low = mid+1;
+            else high = mid-1;
+        }
+        //not found but the last searched index or the next one is where the element should be
+        if (nums[mid] > target) return mid;
+        else return mid+1;
+    }
+    public int SearchInsert(int[] nums, int target) {
+        
+        //edge cases
+        if (nums.Length==2) {
+            if ((target > nums[0]) && (target < nums[1])) return 1;
+        }
+        if (target < nums[0]) return 0;
+        if (target >= nums[nums.Length-1]) {
+            if (target == nums[nums.Length-1]) return nums.Length-1;
+            else return nums.Length; 
+        } 
+        return this.ModifiedBinarySearch(nums, target); 
+
+        /* LINEAR SEARCH -> O(N)
+        // for (int i=0; i<nums.Length; i++) {
+        //     if (nums[i]==target) {
+        //         return i;
+        //     }
+        //     if (nums[i] > target) {
+        //         if (i==0) return i;
+        //         else return i-1;
+        //     }
+        // }
+        */
+    }
+}
+
+//////////////////////////////////////////////////////////////C# Solution//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    int modifiedBinarySearch(vector<int> &nums, int target) {
+        int l=0;
+        int h=nums.size()-1;
+        int mid = -1;
+        while (l <= h) {
+            mid = (l+h)/2;
+            if (nums[mid] == target) return mid;
+            else if (target > nums[mid]) l=mid+1;
+            else h=mid-1;
+        }
+        if (nums[mid] > target) return mid;
+        else return mid+1;
+
+    }
+    int searchInsert(vector<int>& nums, int target) {
+        if (nums.size() == 2) {
+            //edge case 1
+            if ((target > nums[0]) && (target < nums[1])) return 1;
+        }
+        // easy solutions
+        if (target <= nums[0]) return 0;
+        if (target >= nums.back())  {
+            if (target == nums.back()) return nums.size()-1;
+            else return nums.size();
+        }
+
+        //for all other cases
+        return this->modifiedBinarySearch(nums, target);
+    }
+};
