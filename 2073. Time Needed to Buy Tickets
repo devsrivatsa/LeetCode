@@ -1,0 +1,53 @@
+###################################################Python Solution###########################################################
+#YTD
+###################################################Kotlin Solution###########################################################
+class Solution {
+    fun timeRequiredToBuy(tickets: IntArray, k: Int): Int {
+        var queue = tickets.toMutableList()
+        //edge case
+        if (queue.size == 1) return queue[0]        
+        //regular case
+        var seconds_elapsed:Int = 0
+        while (queue[k]!=0) {
+            
+            for (i in 0..queue.size-1) {
+                if (queue[k] == 0) break; 
+                if (queue[i] > 0) {
+                    val newval = queue[i]-1
+                    queue.removeAt(i) //remove the element at index i
+                    queue.add(i, newval) //add new value at index i
+                    seconds_elapsed += 1
+                }
+                
+            }
+        }
+        return seconds_elapsed
+    }
+}
+###################################################Rust Solution#############################################################
+impl Solution {
+    pub fn time_required_to_buy(tickets: Vec<i32>, k: i32) -> i32 {
+        let mut queue = Vec::new();
+        for i in tickets.iter() {
+            queue.push(*i);
+        }
+        //edge case
+        if queue.len() == 1 {return queue[0];}
+        //regular case
+        let mut seconds_elapsed:i32 = 0;
+        while queue.get(k as usize).map_or(false, |&x| x > 0) {
+            for i in 0..queue.len() {
+                if queue.get(k as usize).map_or(false, |&x| x == 0) {
+                    break;
+                }
+                if let Some(val) = queue.get_mut(i as usize) {
+                    if *val > 0 {
+                        *val -= 1;
+                        seconds_elapsed += 1;
+                    }
+                } 
+            }
+        }
+        return seconds_elapsed;
+    }
+}
