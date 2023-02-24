@@ -1,0 +1,52 @@
+###################################################Python Solution###########################################################
+#YTD
+###################################################Kotlin Solution###########################################################
+class Solution {
+    fun countStudents(students: IntArray, sandwiches: IntArray): Int {
+        var stud_q = ArrayDeque<Int>(students.toList())
+        var swch_stk = ArrayDeque<Int>(sandwiches.toList().reversed()) //adding sandwiches in reverse order
+        
+        var prev_left_over = 1000
+        
+        while ((swch_stk.size < prev_left_over)) {
+            prev_left_over = swch_stk.size
+            for (i in 0..stud_q.size-1) {
+                val sw = swch_stk.removeLast()
+                val stud = stud_q.removeFirst()
+
+                if (sw!=stud) {
+                    swch_stk.addLast(sw)
+                    stud_q.addLast(stud)
+                }
+            }
+        }
+        return stud_q.size
+    }
+}
+
+###################################################Rust Solution#############################################################
+use::std::collections::VecDeque;
+impl Solution {
+    pub fn count_students(students: Vec<i32>, sandwiches: Vec<i32>) -> i32 {
+        let mut stud_q:VecDeque<i32> = VecDeque::new();
+        let mut swch_stk:VecDeque<i32> = VecDeque::new();
+        stud_q.extend(students);
+        swch_stk.extend(sandwiches.iter().rev()); //adding sandwiches in reverse order
+
+        let mut left_over:usize = 1000;
+
+        while swch_stk.len() < (left_over as usize) {
+            left_over = swch_stk.len();
+            for i in 0..stud_q.len() {
+                let sw = swch_stk.pop_back().unwrap();
+                let stud = stud_q.pop_front().unwrap();
+
+                if sw != stud {
+                    swch_stk.push_back(sw);
+                    stud_q.push_back(stud);
+                }
+            }
+        }
+        return stud_q.len() as i32
+    }
+}
