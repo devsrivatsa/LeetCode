@@ -1,0 +1,76 @@
+###################################################Rust Solution#############################################################
+use::std::collections::VecDeque;
+
+struct ZigzagIterator {
+    call_no: i32,
+    stk1:VecDeque<i32>,
+    stk2:VecDeque<i32>,
+    dyn_v1_len: usize,
+    dyn_v2_len: usize,
+    dyn_len: usize
+}
+
+/** 
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl ZigzagIterator {
+    /** initialize your data structure here. */
+    
+    fn new(v1: Vec<i32>, v2: Vec<i32>) -> Self {
+        let mut len1 = v1.len();
+        let mut len2 = v2.len();
+        let mut len = v1.len() + v2.len();
+
+        let mut v1s = VecDeque::new();
+        v1s.extend(v1);
+        let mut v2s = VecDeque::new();
+        v2s.extend(v2);
+
+        let mut itr = ZigzagIterator {
+            call_no:0,
+            stk1:v1s,
+            stk2:v2s,
+            dyn_v1_len: len1,
+            dyn_v2_len: len2,
+            dyn_len:len
+        };
+        return itr;
+    }
+    
+    fn next(&mut self) -> i32 {
+        let ret:i32;
+        if self.call_no%2 == 0 {
+            if self.dyn_v1_len > 0 {
+                ret = self.stk1.pop_front().unwrap();
+                self.dyn_v1_len -= 1;
+            } else {
+                ret = self.stk2.pop_front().unwrap();
+                self.dyn_v2_len -= 1;
+            }   
+        } else {
+            if self.dyn_v2_len > 0 {
+                ret = self.stk2.pop_front().unwrap();
+                self.dyn_v2_len -= 1;
+            } else {
+                ret = self.stk1.pop_front().unwrap();
+                self.dyn_v1_len -= 1;
+            }
+
+        }
+        self.call_no += 1;
+        self.dyn_len -= 1;
+        return ret;
+    }
+    
+    fn has_next(&self) -> bool {
+        return self.dyn_len > 0;
+    }
+}
+
+/**
+ * Your ZigzagIterator object will be instantiated and called as such:
+ * let obj = ZigzagIterator::new(v1, v2);
+ * let ret_1: i32 = obj.next();
+ * let ret_2: bool = obj.has_next();
+ */
