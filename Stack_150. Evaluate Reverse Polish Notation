@@ -1,0 +1,99 @@
+####################################################Python Solution###################################################################[debug]
+from collections import deque
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack1 = deque(tokens)
+        stack2 = deque()
+        while len(stack1) > 0:
+            elm = stack1.popleft()
+            if not elm.isdigit():
+                second_op = int(stack2.popleft())
+                first_op = int(stack2.popleft())
+                match(elm):
+                    case "+":
+                        stack2.appendleft(first_op + second_op)
+                    case "-":
+                        stack2.appendleft(first_op - second_op)
+                    case "*":
+                        stack2.appendleft(first_op*second_op)
+                    case "/":
+                        stack2.appendleft(first_op//second_op)
+            else:
+                stack2.appendleft(int(elm))
+        
+        return stack2.popleft()
+        
+        
+####################################################Kotlin Solution###################################################################
+class Solution {
+    fun evalRPN(tokens: Array<String>): Int {
+        var stack1 = ArrayDeque<String>(tokens.toList())
+        var stack2 = ArrayDeque<Int>()
+
+        while (!stack1.isEmpty()) {
+            val item:String = stack1.removeFirst()
+            when(item.toIntOrNull()) {
+                null -> { //this is an operation
+                    val second_op = stack2.removeFirst().toInt()
+                    val first_op = stack2.removeFirst().toInt()
+                    when(item) {
+                        "+" -> stack2.addFirst(first_op + second_op)
+                        "-" -> stack2.addFirst(first_op - second_op)
+                        "*" -> stack2.addFirst(first_op * second_op)
+                        "/" -> stack2.addFirst(first_op / second_op)
+                    }
+                }
+                else -> stack2.addFirst(item.toInt()) //this is an operand
+            }
+        }
+        return stack2.removeFirst()
+    }
+}
+
+
+####################################################Rust Solution#####################################################################
+use std::collections::VecDeque;
+
+impl Solution {
+    pub fn eval_rpn(tokens: Vec<String>) -> i32 {
+            let mut stack1: VecDeque<&str> = VecDeque::new();
+            let mut stack2: VecDeque<i32> = VecDeque::new();
+
+            for i in tokens.iter().rev() {
+                stack1.push_back(i);
+            }
+
+            while !(stack1.is_empty()) {
+                let item = stack1.pop_back().unwrap();
+                match item {
+                    "+" => {
+                        let second_op = stack2.pop_back().unwrap();
+                        let first_op = stack2.pop_back().unwrap();
+                        stack2.push_back(first_op + second_op); 
+                    },
+                    "-" => {
+                        let second_op = stack2.pop_back().unwrap();
+                        let first_op = stack2.pop_back().unwrap();
+                        stack2.push_back(first_op - second_op); 
+                    },
+                    "*" => {
+                        let second_op = stack2.pop_back().unwrap();
+                        let first_op = stack2.pop_back().unwrap();
+                        stack2.push_back(first_op * second_op); 
+                    },
+                    "/" => {
+                        let second_op = stack2.pop_back().unwrap();
+                        let first_op = stack2.pop_back().unwrap();
+                        stack2.push_back(first_op / second_op); 
+
+                    },
+                    _ => {
+                        let num:i32 = item.parse().unwrap();
+                        stack2.push_back(num);
+                    }
+                }
+            }
+            
+            return stack2.pop_back().unwrap();
+        }
+}
