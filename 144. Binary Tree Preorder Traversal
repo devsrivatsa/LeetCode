@@ -1,0 +1,50 @@
+#############################################################Kotlin Solution########################################################################
+/**
+ * Example:
+ * var ti = TreeNode(5)
+ * var v = ti.`val`
+ * Definition for a binary tree node.
+ * class TreeNode(var `val`: Int) {
+ *     var left: TreeNode? = null
+ *     var right: TreeNode? = null
+ * }
+ */
+ 
+class Solution {
+    var result:MutableList<Int> = mutableListOf() //list to store the result
+    
+    fun preorderTraversalRecursive(root: TreeNode?): List<Int> {
+        if (root != null) {
+                val item = root.`val`
+                result.add(item)
+                preorderTraversal(root.left)
+                preorderTraversal(root.right)
+        }
+        return this.result
+    }
+
+    // tc: O(N) and sc: O(2N) where N is the number of nodes
+    fun preorderTraversalIterative(root: TreeNode?): List<Int> {
+        if (root == null) return result
+        
+        var st:ArrayDeque<TreeNode> = ArrayDeque<TreeNode>()
+        st.addFirst(root)
+        
+        while(!st.isEmpty()) {
+            var root = st.removeFirst()
+            //preorder = root, left, right 
+            //(the order is reversed here because we retrive elements from stack)
+            result.add(root.`val`)
+            if (root.right != null) {
+                st.addFirst(root.right)
+            }
+            if (root.left != null) {
+                st.addFirst(root.left)
+            }
+            
+        }
+        return result
+    }
+}
+
+#############################################################Python Solution########################################################################
