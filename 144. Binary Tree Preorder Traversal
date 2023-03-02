@@ -23,7 +23,7 @@ class Solution {
         return this.result
     }
 
-    // tc: O(N) and sc: O(2N) where N is the number of nodes
+    // tc: O(N) and sc: O(N) where N is the number of nodes
     fun preorderTraversalIterative(root: TreeNode?): List<Int> {
         if (root == null) return result
         
