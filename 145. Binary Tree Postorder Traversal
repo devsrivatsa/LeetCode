@@ -1,0 +1,34 @@
+#############################################################Kotlin Solution########################################################################
+
+class Solution {
+    var result:MutableList<Int> = mutableListOf()
+    fun postorderTraversalRecursive(root: TreeNode?): List<Int> {
+        if (root != null) {
+            postorderTraversal(root.left)
+            postorderTraversal(root.right)
+            result.add(root.`val`)
+        }
+        return result
+    }
+
+    //iterative solution --> using 2 stacks. tc: O(N) and sc: O(2N) where N is the number of nodes
+    fun postorderTraversalIterative(root:TreeNode?): List<Int> {
+        var stack1 = ArrayDeque<TreeNode>()
+        var stack2 = ArrayDeque<TreeNode>()
+
+        if (root==null) return result
+        stack1.addFirst(root)
+        while (!stack1.isEmpty()) {
+            var node = stack1.removeFirst()
+            stack2.addFirst(node)
+            if (node.left != null) stack1.addFirst(node.left);
+            if (node.right != null) stack1.addFirst(node.right);    
+        }
+        while (!stack2.isEmpty()) {
+            result.add(stack2.removeFirst().`val`)
+        }
+        return result
+    }
+
+}
+
