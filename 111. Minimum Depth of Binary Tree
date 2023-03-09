@@ -1,0 +1,23 @@
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if root is None:
+            return 0
+        else:
+            if root.left:
+                left = 1 + self.minDepth(root.left)
+            else:
+                left = 0
+            
+            if root.right:
+                right = 1 + self.minDepth(root.right)
+            else:
+                right = 0
+
+            if (left > 0) and (right > 0):
+                return min(left, right)
+            if (left == 0) and (right > 0):
+                return right
+            if (left > 0) and (right == 0):
+                return left
+            if (left==0) and (right==0):
+                return 1
