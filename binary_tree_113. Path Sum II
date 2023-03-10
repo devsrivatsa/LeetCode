@@ -1,0 +1,27 @@
+class Solution:
+    stack = deque()
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+
+        def dfs(root, path, result):
+            if root is None:
+                return
+            else:
+                #not leaf
+                path.append(root.val)
+                #when at a leaf
+                if (root.left is None and root.right is None):
+                    if sum(path)==targetSum:
+                        result.append(path.copy()) 
+                    path.pop()
+                    return
+
+                #not leaf
+                dfs(root.left, path, result)
+                dfs(root.right, path, result)
+                path.pop()
+            
+        path=[]
+        paths=[]
+        dfs(root, path, paths)
+        print(paths)
+        return paths
