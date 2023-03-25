@@ -13,6 +13,34 @@ class Solution:
                 ep -= 1
             if s < target:
                 sp += 1
+                
+############################### Rust #################################
+
+impl Solution {
+    pub fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
+        if numbers.len() == 2 {
+            return vec![1, 2]
+        }
+
+        let mut sp = 0;
+        let mut ep = numbers.len()-1;
+
+        while sp < ep {
+            let mut s = &numbers[sp] + &numbers[ep];
+            if s == target {
+                return vec![sp as i32+1, ep as i32+1];
+            }
+            if s > target {
+                ep -= 1;
+            }
+            if s < target {
+                sp += 1;
+            }
+        }
+        return vec![-1, -1];
+
+    }
+}
         
 
             
