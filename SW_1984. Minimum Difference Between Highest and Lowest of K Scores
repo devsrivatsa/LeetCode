@@ -1,4 +1,6 @@
 
+# sorting and then choosing any k items will give easy access to the min and max elements of that set of k elms.
+
 class Solution:
     def minimumDifference(self, nums: List[int], k: int) -> int:
         l, r = 0, k-1
