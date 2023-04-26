@@ -1,0 +1,12 @@
+class Solution:
+    def minimumRecolors(self, blocks: str, k: int) -> int:
+        min_ops = wb = sum([1 if b == 'W' else 0 for b in blocks[0:k]]) # calculatint wb and bb for first window
+        l, r = 1, k # this is the NEXT window
+        while r < len(blocks):
+            if blocks[l-1] == 'W':
+                wb -= 1
+            if blocks[r] == 'W':
+                wb += 1
+            min_ops = min(min_ops, wb)
+            l,r = l+1, r+1
+        return min_ops
