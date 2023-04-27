@@ -3,7 +3,6 @@ class Solution:
         min_win = float("inf")
         curr_sum,l,r = 0,0,0
         while r < len(nums):
-            # r+=1
             curr_sum += nums[r]
             while curr_sum >= target:
                 min_win = min(min_win, r-l+1)
