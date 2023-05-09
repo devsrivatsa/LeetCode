@@ -16,3 +16,28 @@ class Solution:
             max_win = max(max_win, r-l+1)
             r += 1
         return max_win
+        
+############### A bit more optimized - (avoid searching dictionary for max frequent character and count)##############        
+
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        if len(s) == 1: 
+            return 1
+        l,r = 0,0
+        hm = dict()
+        max_win = 0
+        maxfreq, maxfreqc = 0, s[0] #keeping track of the most freq character and freequency
+        while r < len(s):
+            hm[s[r]] = hm.get(s[r], 0) + 1
+            if hm[s[r]] > maxfreq: #keeping track of the most freq character and freequency
+                maxfreq = hm[s[r]]
+                maxfreqc = s[r]
+            if (r-l+1 - maxfreq) > k: #(r-l+1 - maxfreq) is the threshold
+                #descrease window from left
+                hm[s[l]] -= 1
+                if s[l] == maxfreqc: #keeping track of the most freq character and freequency
+                    maxfreq -= 1
+                l += 1
+            max_win = max(max_win, r-l+1)
+            r += 1
+        return max_win
