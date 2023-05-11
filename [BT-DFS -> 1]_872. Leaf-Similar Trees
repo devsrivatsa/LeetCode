@@ -1,0 +1,9 @@
+class Solution:
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+        def dfs(root, leafseq):
+            if not root:
+                return []
+            if not root.left and not root.right:
+                leafseq.append(root.val)
+            return leafseq + dfs(root.left, []) + dfs(root.right, [])
+        return dfs(root1, []) == dfs(root2, [])
