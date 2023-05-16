@@ -1,0 +1,13 @@
+class Solution:
+    def findLeaves(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ltl = collections.defaultdict(list)
+        def dfs(root, level):
+            if not root:
+                return level
+            left = dfs(root.left, level)
+            right = dfs(root.right, level)
+            level = max(left, right)
+            ltl[level].append(root.val)
+            return level+1
+        dfs(root, 0)
+        return ltl.values()
