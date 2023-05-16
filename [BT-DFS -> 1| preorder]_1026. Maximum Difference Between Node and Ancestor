@@ -1,0 +1,35 @@
+def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+    def predfs(root, maxv, minv, maxdiff):
+        if not root:
+            return maxdiff 
+        maxv = max(root.val, maxv)
+        minv = min(root.val, minv)
+        maxdiff = max(maxdiff, abs(maxv-minv))
+        return max(
+            predfs(root.left, maxv, minv, maxdiff),
+            predfs(root.right, maxv, minv, maxdiff)
+        )
+
+    return predfs(root, -float("inf"), float("inf"), 0)
+        
+        
+#################################################################        
+######################## Naive Method ###########################
+# def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+#     paths = []
+#     def dfs(root, path):
+#         if not root:
+#             return
+#         path.append(root.val)
+#         dfs(root.left, path)
+#         dfs(root.right, path)
+#         if root.left is None and root.right is None:
+#             paths.append(path.copy())
+#         path.pop()
+#     dfs(root, [])
+#     max_diff=0
+#     for path in paths:
+#         for i in range(len(path)):
+#             for j in range(i+1,len(path)):
+#                 max_diff = max(max_diff, abs(path[i] - path[j]))
+#     return max_diff
