@@ -1,0 +1,23 @@
+def get_leaves_before_parents(root):
+    """
+      - this uses post order traversal
+      - there is at lest 1 root in the tree. hence no need for "if not root then return" condition
+      - the result will look like this:
+        {
+          0: [4,5,6,7]
+          1: [2,3]
+          2: [1]
+        } where the keys are levels and the values are lists of node val
+    """ 
+    res = collections.defaultdict()
+    def dfs(node, level):
+        if not node:
+            return level
+        left = get_leaves_before_parents(node.left, level)
+        right = get_leaves_before_parents(node.right, level)
+        layer = max(left, right)
+        res[layer].append(node)
+        return layer+1
+    dfs(root, 0)
+    return res
+  
