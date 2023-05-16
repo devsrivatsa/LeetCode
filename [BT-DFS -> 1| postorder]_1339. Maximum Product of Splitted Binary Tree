@@ -1,0 +1,22 @@
+class Solution:
+  """
+  with post order traversal, we store the sum of every subtree in a list, and return the sum to the tree's parent node.
+  This happens recursively until the final sum returned is the total sum of all nodes in the tree.
+  Now, the max product of a tree will be a particular sum -> s from the allsums list times the remaining sum excluding s (hence -> (tot_sum-s))
+  This is the only way to include the root's value in calculation of "remaining sum".
+  """
+    def maxProduct(self, root: Optional[TreeNode]) -> int:
+        allsums = []
+        def dfs(root):
+            if not root:
+                return 0
+            l_sum = dfs(root.left)
+            r_sum = dfs(root.right)
+            curr_sum = root.val + l_sum + r_sum
+            allsums.append(curr_sum)
+            return curr_sum
+        tot_sum = dfs(root)
+        max_prod = 0
+        for s in allsums:
+            max_prod = max(max_prod, s * (tot_sum - s))
+        return max_prod % (10**9 + 7) #this is because the question wants me to return the result modulo 10^9 + 7
