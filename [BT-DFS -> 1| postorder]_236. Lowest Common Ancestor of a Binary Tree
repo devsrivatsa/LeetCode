@@ -1,4 +1,13 @@
 class Solution:
+"""
+There are 3 possibilities:
+    - the root is one of the nodes we're looking to find. In this case, we just return the root
+    - we find p in lst and q in rst or viceversa. In that case, the lowest common ansistor is the root.
+    - we find either p or q in one side and nothing in another. This means the other element is also in the same side. In this case, the lca is the node we find first. (hence left or right)
+    
+    T: O(N) since we look in each node and check if its equal to p or q
+    S: O(1) because we we only store left and right. But with the space consumed by the recursion stack, it is O(N)
+"""
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         if not root:
             return None
