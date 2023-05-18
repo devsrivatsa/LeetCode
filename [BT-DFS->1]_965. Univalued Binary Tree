@@ -1,0 +1,14 @@
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        myval = root.val
+        nodes = set()
+        def dfs(root):
+            if not root:
+                return
+            nodes.add(root.val)
+            dfs(root.left)
+            dfs(root.right)
+        dfs(root)
+        if len(nodes) > 1:
+            return False
+        return True 
