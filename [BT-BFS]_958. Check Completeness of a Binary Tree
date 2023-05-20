@@ -1,0 +1,16 @@
+from queue import Queue
+class Solution:
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        q = Queue()
+        q.put(root)
+        while not q.empty():
+            node = q.get()
+            if node:
+                q.put(node.left)
+                q.put(node.right)
+            else:
+                while not q.empty():
+                    node = q.get()
+                    if node:
+                        return False
+        return True
