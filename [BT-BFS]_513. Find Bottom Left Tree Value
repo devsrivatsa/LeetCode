@@ -1,0 +1,18 @@
+class Solution:
+    def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        #1. bfs
+        q = collections.deque([root])
+        res = []
+        while q:
+            qlen = len(q)
+            temp = []
+            for _ in range(qlen):
+                node = q.popleft()
+                if node:
+                    temp.append(node.val)
+                    q.append(node.left)
+                    q.append(node.right)
+            if len(temp)>0:
+                res.append(temp)
+        #2. return left most value of the last level
+        return res[-1][0]
