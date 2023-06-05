@@ -1,0 +1,40 @@
+class Solution:
+    def insertIntoBST(self, root: TreeNode, val: int):
+        
+        #There is no node in the tree
+        if not root:
+            root = TreeNode(val)
+        
+        if val < root.val:
+            if root.left is None:
+                root.left = TreeNode(val)
+            else:
+                self.insertIntoBST(root.left, val)
+        elif val > root.val:
+            if root.right is None:
+                root.right = TreeNode(val)
+            else:
+                self.insertIntoBST(root.right, val)
+        
+        return root
+
+###########################################################################################
+
+class Solution:
+    def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        def helper(root, prev):
+            if not root:
+                if prev:
+                    if val > prev.val:
+                        prev.right = TreeNode(val)
+                    else:
+                        prev.left = TreeNode(val)
+                else:
+                    root = TreeNode(val)
+            elif val > root.val:
+                helper(root.right, root)
+            else:
+                helper(root.left, root)
+            return root
+        
+        return helper(root, None)
