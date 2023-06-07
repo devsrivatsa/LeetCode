@@ -1,0 +1,32 @@
+#The inorder traversal of a BST will return the sorted order of treenode values.
+class Solution:
+    def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+       prev, min_diff = None, float('inf')
+       def dfs(root):
+           if not root:
+               return
+           dfs(root.left)
+           nonlocal prev, min_diff
+           if prev:
+               min_diff = min(min_diff, abs(prev.val - root.val))
+           prev = root
+           dfs(root.right)
+       dfs(root)
+       return min_diff
+
+<<#######################Iterative Solution#################################################>>
+
+    def minDiffInBST(self, root):
+        stack = []
+        prev = None
+        min_diff = float('inf')
+        while stack or root:
+            while root:
+                stack.append(root)
+                root = root.left
+            root = stack.pop()
+            if prev:
+                min_diff = min(root.val - prev.val, min_diff)
+            prev = root
+            root = root.right
+        return min_diff
