@@ -1,4 +1,6 @@
-#The inorder traversal of a BST will return the sorted order of treenode values.
+#1. the min dist will always be betwen any 2 adjacent sorted numbers.
+#2. The inorder traversal of a BST will return the sorted order of treenode values.
+
 class Solution:
     def minDiffInBST(self, root: Optional[TreeNode]) -> int:
        prev, min_diff = None, float('inf')
