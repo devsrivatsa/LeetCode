@@ -1,0 +1,37 @@
+"""
+Logic: the inorder of a bst gives a sorted list.
+hence, when traversing the tree, if the prev node is not less than the current node, then either prev node or the current node is misplaced.
+- If this is the case, the prev node is stored as first, and the current node as middle
+- prev is updated as we traverse the tree while first and middle are stored outside the dfs function
+- if another node misplaced node is located, then that is stored as second
+After traversing the tree, we have first, middle and last. if last is not present, this means that the 2 misplaced nodes are next to each other in the sorted set when we traverse the tree in inorder-ly fashion.
+If last node is present, then the 2 nodes to be swapped are not adjecent to each other in the soeted set.
+- i.e the left and right nodes 
+"""
+class Solution:
+    def recoverTree(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        TC: O(N)
+        SC: O(1)
+        """
+        first, middle, last, prev = [None]*4
+        def dfs(root):
+            if not root:
+                return
+            dfs(root.left)
+            nonlocal first, middle, last, prev
+            if prev:
+                if root.val < prev.val:
+                    if not first:
+                        first = prev
+                        middle = root
+                    else:
+                        last = root
+            prev = root
+            dfs(root.right)
+        dfs(root)
+        if not last:
+            first.val, middle.val = middle.val, first.val
+        else: #we have first, middle, and last
+            first.val, last.val = last.val, first.val
