@@ -1,5 +1,5 @@
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+  def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         """
         TC: 
           O(log(N)) or O(H) where H is the height of the tree; 
@@ -17,3 +17,13 @@ class Solution:
             return self.lowestCommonAncestor(root.left, p, q)
         else: # if one value is in lst and anothet in rst, then the root is the lca
             return root
+            
+  def iterative(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        curr = root
+        while curr:
+            if p.val > curr.val and q.val > curr.val:
+                curr = curr.right
+            elif p.val < curr.val and q.val < curr.val:
+                curr = curr.left
+            else:
+                return curr
