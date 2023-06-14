@@ -1,0 +1,19 @@
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        TC: 
+          O(log(N)) or O(H) where H is the height of the tree; 
+          Best case: O(1); 
+          Worst case: O(N) unbalanced BST where number of nodes = height of the tree;
+        SC: O(1)
+        """
+        if not root:
+            return
+        if root.val == p.val or root.val == q.val: # if one of the values is the root, then it is the lca
+            return root
+        if p.val > root.val and q.val > root.val: # if both values are in rst; just look into rst; return whichever value that was found first
+            return self.lowestCommonAncestor(root.right, p, q)
+        elif p.val < root.val and q.val < root.val: # if both are in lst; just look into lst; return whichever value that was found first
+            return self.lowestCommonAncestor(root.left, p, q)
+        else: # if one value is in lst and anothet in rst, then the root is the lca
+            return root
