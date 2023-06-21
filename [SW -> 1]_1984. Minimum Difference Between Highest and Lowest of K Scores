@@ -10,3 +10,54 @@ class Solution:
             min_diff = min(min_diff, nums[r] - nums[l])
             l, r = l+1, r+1
         return min_diff
+
+############################################### GO ##########################################################
+
+func minimumDifference(nums []int, k int) int {
+    var l int = 0
+    var r int = k-1
+    minDiff:= math.MaxInt32
+    sort.Ints(nums)
+    for r <  len(nums) {
+        if minDiff > nums[r]-nums[l] {
+            minDiff = nums[r]-nums[l]
+        }
+        l = l+1
+        r = r+1
+    }
+    return minDiff
+
+############################################### Rust ##########################################################
+
+use std::cmp;
+
+impl Solution {
+    pub fn minimum_difference(nums: Vec<i32>, k: i32) -> i32 {
+        let mut l: usize = 0;
+        let mut r: usize = (k - 1) as usize;
+        let mut min_diff = std::i32::MAX;
+        let mut arr:Vec<i32> = nums.clone();
+        arr.sort();
+        while r < arr.len() {
+            min_diff = cmp::min(min_diff, arr[r]-arr[l]);
+            l += 1;
+            r += 1;
+        }
+        min_diff
+    }
+}
+
+//idiomatic rust
+impl Solution {
+    pub fn minimum_difference(nums: Vec<i32>, k: i32) -> i32 {
+        let mut arr = nums.clone();
+        arr.sort();
+
+        let min_diff = arr.windows(k as usize)
+            .map(|window| window.last().unwrap() - window.first().unwrap())
+            .min()
+            .unwrap_or(std::i32::MAX);
+
+        min_diff
+    }
+}
