@@ -36,14 +36,16 @@ use std::collections::HashMap;
 impl Solution {
     pub fn find_anagrams(s: String, p: String) -> Vec<i32> {
         
-        let mut sv:Vec<char> = s.chars().collect();
         //edge case 1
-        if p.len() > s.len() { return !vec[] }
+        if p.len() > s.len() { return vec![] }
+        
         let mut res:Vec<i32> = Vec::new();
-
         let mut p_hm:HashMap<char, usize> = HashMap::new();
         let mut win_hm:HashMap<char, usize> = HashMap::new();
-        
+        let mut sv:Vec<char> = s.chars().collect();
+        let mut l:usize = 0;
+        let mut r:usize = p.len();
+
         for ch in sv[0..p.len() as usize].iter() {
             *win_hm.entry(ch.clone()).or_insert(0) += 1; // and_modify() can also be used
         }
@@ -55,11 +57,10 @@ impl Solution {
             if  p_hm == win_hm {
                 return vec![0]
             } else {
-                return res
+                return vec![]
             }
         }
-        let mut l:usize = 0;
-        let mut r:usize = p.len();
+
         while r <= s.len() {
             if p_hm == win_hm {
                 res.push(l.clone() as i32);
