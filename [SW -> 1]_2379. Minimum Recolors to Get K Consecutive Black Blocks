@@ -10,3 +10,59 @@ class Solution:
             min_ops = min(min_ops, wb)
             l,r = l+1, r+1
         return min_ops
+
+############################## GOlang #####################################
+
+func minimumRecolors(blocks string, k int) int {
+	var minOps int = 0
+	for i := range blocks[:k] {
+		if blocks[i] == 'W' {
+			minOps += 1
+		}
+	}
+	wb := minOps
+	l := 1
+	r := k
+	for r < len(blocks) {
+		if blocks[l-1] == 'W' {
+			wb -= 1
+		}
+		if blocks[r] == 'W' {
+			wb += 1
+		}
+
+		if minOps > wb {
+			minOps = wb
+		}
+		l += 1
+		r += 1
+	}
+	return minOps
+}
+
+############################## Rust #####################################
+
+use std::cmp;
+
+impl Solution {
+    pub fn minimum_recolors(blocks: String, k: i32) -> i32 {
+        let blocksv: Vec<char> = blocks.chars().collect();
+        let mut l: usize = 1;
+        let mut r: usize = k as usize;
+        let mut min_ops = blocksv[0..k as usize].iter().fold(0, |agg, x| if *x=='W' {agg+1} else {agg});
+        println!("{}", min_ops);
+        let mut wb = min_ops.clone();
+        while r < blocks.len() {
+            if blocksv[l-1] == 'W' {
+                wb -=1;
+            }
+            if blocksv[r] == 'W' {
+                wb += 1;
+            }
+            min_ops = cmp::min(min_ops, wb);
+            l += 1;
+            r += 1;
+        }
+        min_ops
+    }
+}
