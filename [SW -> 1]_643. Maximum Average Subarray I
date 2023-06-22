@@ -5,3 +5,34 @@ class Solution:
             curr_sum += nums[i] - nums[i-k]
             max_sum = max(curr_sum, max_sum)
         return round(max_sum/k,5)
+
+############################## GOlang #####################################
+func findMaxAverage(nums []int, k int) float64 {
+    currSum := 0
+    for i:= range nums[0:k] {
+        currSum += nums[i]
+    }
+    maxSum := currSum
+    for i:=k; i<len(nums); i++ {
+        currSum += nums[i]
+        currSum -= nums[i-k]
+
+        if maxSum < currSum {
+            maxSum = currSum
+        }
+    }
+    return float64(maxSum)/float64(k) 
+
+############################## Rust #####################################
+use std::cmp;
+impl Solution {
+    pub fn find_max_average(nums: Vec<i32>, k: i32) -> f64 {
+        let mut curr_sum:i32 = nums[0..k as usize].iter().sum();
+        let mut max_sum =  curr_sum.clone();
+        for i in (k as usize)..nums.len()  {
+            curr_sum += nums[i] - nums[i-(k as usize)];
+            max_sum = cmp::max(max_sum, curr_sum)
+        }
+        return max_sum as f64/k as f64
+    }
+}
