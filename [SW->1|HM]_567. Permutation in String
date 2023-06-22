@@ -11,3 +11,34 @@ class Solution:
             l+=1
             r+=1
         return hm1 == hm2
+
+############################## Golang ############################################
+
+############################## Rust ##############################################
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn check_inclusion(s1: String, s2: String) -> bool {
+        if s1.len() > s2.len() { return false }
+        let mut l:usize = 0;
+        let mut r = s1.len();
+        let mut s2vec: Vec<char> = s2.chars().collect();
+        let mut hm1 = HashMap::new();
+        let mut hm2 = HashMap::new();
+        
+        for i in s2vec[0..r].iter() { *hm2.entry(i.clone()).or_insert(0) += 1; }
+        for i in s1.chars() { *hm1.entry(i.clone()).or_insert(0) += 1; }
+        while r < s2vec.len() {
+            if hm2 == hm1 { return true }
+            
+            //update window
+            hm2.entry(s2vec[l].clone()).and_modify(|c| *c-=1);
+            if hm2[&s2vec[l]] == 0 { hm2.remove(&s2vec[l]); }
+            hm2.entry(s2vec[r].clone()).and_modify(|c| *c+=1 ).or_insert(1);
+            l+=1;
+            r+=1;
+        }
+        hm2 == hm1 
+    }
+}
+
