@@ -26,3 +26,57 @@ class Solution:
             l += 1
             r += 1
         return res
+############################## GOlang ###################################
+
+
+
+############################## Rust #####################################
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn find_anagrams(s: String, p: String) -> Vec<i32> {
+        
+        let mut sv:Vec<char> = s.chars().collect();
+        //edge case 1
+        if p.len() > s.len() { return !vec[] }
+        let mut res:Vec<i32> = Vec::new();
+
+        let mut p_hm:HashMap<char, usize> = HashMap::new();
+        let mut win_hm:HashMap<char, usize> = HashMap::new();
+        
+        for ch in sv[0..p.len() as usize].iter() {
+            *win_hm.entry(ch.clone()).or_insert(0) += 1; // and_modify() can also be used
+        }
+        for ch in p.chars() {
+            *p_hm.entry(ch.clone()).or_insert(0) += 1;
+        }
+        //edge case 2
+        if p.len() == s.len() {
+            if  p_hm == win_hm {
+                return vec![0]
+            } else {
+                return res
+            }
+        }
+        let mut l:usize = 0;
+        let mut r:usize = p.len();
+        while r <= s.len() {
+            if p_hm == win_hm {
+                res.push(l.clone() as i32);
+            }
+            //this line is needed as the string indexing will overflow when r = len(s), but it is needed to include the last window in the result
+            if r == s.len() {
+                break
+            }
+            //moving the window
+            win_hm.entry(sv[l].clone()).and_modify(|count| *count-=1); //we just want to modify the count
+            if win_hm[&sv[l]] == 0 {
+                win_hm.remove(&sv[l]);
+            }
+            win_hm.entry(sv[r].clone()).and_modify(|count| *count+=1).or_insert(1); //if count exists, then modify, else insert 1 (alt to *hm_win.entry(&s[r].to_owned()).or_insert(0) += 1)
+            l += 1;
+            r += 1;
+        }
+        res
+    }
+}
