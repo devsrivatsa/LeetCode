@@ -14,3 +14,45 @@ class Solution:
         if min_win == float("inf"):
             min_win = 0
         return min_win
+
+################################## Swift ####################################
+################################# Kotlin ####################################
+class Solution {
+    fun lengthOfLongestSubstring(s: String): Int {
+        if (s.length <= 1) return s.length
+        var maxlen = 0
+        var l = 0
+        var r = 0
+        var res = mutableSetOf<Char>();
+        while (r < s.length) {
+            while (res.contains(s.get(r))) {
+                res.remove(s.get(l))
+                l += 1
+            }
+            res.add(s.get(r))
+            maxlen = maxOf(maxlen, res.size)
+            r+=1 
+        }
+        return maxlen
+    }
+}
+################################# Rust ######################################
+use std::collections::HashSet;
+use std::cmp;
+impl Solution {
+    pub fn length_of_longest_substring(s: String) -> i32 {
+        let mut sv:Vec<char> = s.chars().collect();
+        let (mut maxlen, mut l, mut r): (usize, usize, usize) = (0,0,0);
+        let mut res:HashSet<char> = HashSet::new();
+        while r < s.len() {
+            while res.contains(&sv[r]) {
+                res.remove(&sv[l]);
+                l += 1;
+            }
+            res.insert(sv[r].clone());
+            maxlen = cmp::max(maxlen, res.len());
+            r+=1
+        }
+        return maxlen as i32
+    }
+}
