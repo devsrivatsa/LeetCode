@@ -1,0 +1,21 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        dp = [-1 for i in range(len(nums))] #define dp array
+        def helper(i):
+            """
+            if it is the last house (in rev order), he can go ahead and choose to rob it.
+            Because, if it is not the last, then he should either choose to rob the current house 
+            nums[i] and the house which is at 2 positions from the current house nums[i-2] together
+            , or he can just ignore the current house and only rob the one before it 0+nums[i-1]. 
+            """
+            if i == 0:
+                return nums[i]
+            if i < 0: #this will happen if i-2 < 0 in case house no.1 is choosen (nums[1] + helper(1-2))
+                return 0
+            if dp[i] != -1:
+                return dp[i]
+            choose = nums[i] + helper(i-2)
+            dont_choose = 0 + helper(i-1)
+            dp[i] = max(choose, dont_choose)
+            return dp[i]
+        return helper(len(nums)-1)
