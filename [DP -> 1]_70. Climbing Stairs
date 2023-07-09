@@ -20,7 +20,22 @@ class Solution:
                 prev2 = prev1
                 prev1 = curr
             return curr
-        
+    
+####################### Rust - Tabulation ########################
+impl Solution {
+    // botton up approach
+    pub fn climb_stairs(n: i32) -> i32 {
+        if n == 1 { return 1 }
+        //no: of ways from last step and last_before, and current step
+        let (mut last, mut last_before, mut curr) = (1,1,0);
+        for i in (0..n-1).rev() { //we know how many ways there are for n-2nd and n-1st(last) step
+            curr = last + last_before; //initially curr refers to n-2nd step
+            last = last_before;
+            last_before = curr;
+        }
+        return curr
+    }
+}
 
 
         
