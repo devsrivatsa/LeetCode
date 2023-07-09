@@ -1,0 +1,30 @@
+#memoization: Top Down approach
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        dp = [-1 for i in range(len(cost))]
+        def find_cost(i, cost):
+            if i == len(cost)-1:
+                return cost[len(cost)-1]
+            if i >= len(cost):
+                return 0
+            if dp[i] != -1:
+                return dp[i]
+            dp[i] = cost[i] + min(find_cost(i+1, cost), find_cost(i+2, cost))
+            return dp[i]
+        return min(find_cost(0, cost), find_cost(1, cost))
+   
+########################## Rust - Tabulation: bottom's up approach ##########################
+
+use std::cmp;
+
+impl Solution {
+    pub fn min_cost_climbing_stairs(cost: Vec<i32>) -> i32 {
+        let mut dp:Vec<i32> = cost.clone(); //using the cost array as dp array
+        dp.push(0); //adding 0 as this is the cost if we take 2 steps from last step
+        for i in (0..cost.len()-1).rev() {
+            //for every other step, the cost is cost of current step + min cost of takin 1 step vs 2 steps
+            dp[i] = dp[i] + cmp::min(dp[i+1], dp[i+2]);
+        }
+        return cmp::min(dp[0], dp[1])
+    }
+}
