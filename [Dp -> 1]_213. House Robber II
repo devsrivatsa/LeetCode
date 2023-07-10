@@ -1,0 +1,48 @@
+class Solution:
+    def house_robber1(self, nums):
+        two, three, curr = 0,0,0
+        for one in nums:
+            curr = max(one+three, two)
+            three = two
+            two = curr
+        return curr
+
+    def rob(self, nums: List[int]) -> int:
+        #edge case
+        if len(nums) == 1:
+            return nums[0]
+        
+        #call house_robber1 on everthing except last house
+        rob_pattern1 = self.house_robber1(nums[:-1])
+        
+        #call house_robber1 on everything except first house
+        rob_pattern2 = self.house_robber1(nums[1:])
+        
+        return max(rob_pattern1, rob_pattern2)
+
+############################## Rust ####################################
+
+use std::cmp;
+
+impl Solution {
+    fn rob1(nums: Vec<i32>) -> i32 {
+        let (mut curr, mut two, mut three) = (0,0,0);
+        for one in nums {
+            curr = cmp::max(one+three, two);
+            three = two;
+            two = curr;
+        }
+        return curr
+    }
+
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        if nums.len() == 1 { return nums[0] }
+        
+        //everything except the first house
+        let robbery_pattern1 = Self::rob1(nums[1..].to_vec());
+        //everything except the last house
+        let robbery_pattern2 = Self::rob1(nums[..nums.len()-1].to_vec());
+        
+        return cmp::max(robbery_pattern1, robbery_pattern2)
+    }
+}
