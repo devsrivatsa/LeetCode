@@ -1,3 +1,4 @@
+# Top-down approach (memoization)
 class Solution:
     def rob(self, nums: List[int]) -> int:
         dp = [-1 for i in range(len(nums))] #define dp array
@@ -19,3 +20,23 @@ class Solution:
             dp[i] = max(choose, dont_choose)
             return dp[i]
         return helper(len(nums)-1)
+
+########################## Rust - Bottom's up Approach (tabulation) ###########################################################
+
+use std::cmp;
+
+impl Solution {
+    pub fn rob(nums: Vec<i32>) -> i32 {
+        let (mut two, mut three, mut curr) = (0, 0, 0); //these represent houses 3 and 2
+        for i in 0..nums.len() {
+            let mut one = nums[i].clone(); //this is the first house
+
+            //the current cost is cost of robbing the current house
+            //we can either rob this house and third, or just the second house
+            curr = cmp::max(one + three, two); //curr represents cost of robbing current house
+            three = two;
+            two = curr;
+        }
+        return curr //this will be the current cost at the end of the line
+    }
+}
