@@ -6,8 +6,6 @@
 #or solve for double digit:(i and i+1) and go to i+2. But we only do this if the number is less than or eq to 26
 #so dp[i]=dp[i+1] + dp[i+2](if feasible)
 
-
-
 class Solution:
     def numDecodings(self, s: str) -> int:
         #so dp is how many ways we can decode the string 
@@ -33,4 +31,17 @@ class Solution:
             #cache the result
             dp[i] = res
             return res
+            
+        #bottom up approach
+        def tabulation():
+            for i in range(len(s)-1, -1, -1):
+                if s[i] == "0":
+                    dp[i] = 0
+                else:
+                    dp[i] = dp[i+1]
+                if (i+1 < len(s) and (s[i]=="i" or s[i]=="2" and s[i+1] in "0123456")):
+                    dp[i] += dp[i+2]
+            return dp[0]
+        
+        #using top down approach
         return dfs(0)
