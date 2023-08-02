@@ -1,0 +1,36 @@
+# if we have a number 12131: we can solve for 1 and 2131 or 12 and 131
+# if we take the route 1, then we have 2131: we can solve 2 and 131 or 21 and 31
+# in route 1, when we solve for 131, we cannot solve for 1 and 31 because 31 > 26. So we will HAVE TO solve for 13 and 1.
+#hence we only solve for double digit if it is less than or equal to 26.
+#if we are at ith index, we can solve for i and go to next i+1
+#or solve for double digit:(i and i+1) and go to i+2. But we only do this if the number is less than or eq to 26
+#so dp[i]=dp[i+1] + dp[i+2](if feasible)
+
+
+
+class Solution:
+    def numDecodings(self, s: str) -> int:
+        #so dp is how many ways we can decode the string 
+        #len(s) will also represent the last position in the string. There will only be 1 way to decode it. 
+        #Hene it is 1. Also, if we get an empty string, we want to return a 1. This is the base case
+        dp = { len(s): 1 }
+        def dfs(i):
+            #if the subproblem is already solved, then return the result
+            if i in dp:
+                return dp[i]        
+            #if the string starts with 0 then its invalid, return 0. This is also a base case
+            if s[i] == "0":
+                return 0
+            #if it is not 0 then its anything from 1 through 9. go to the next digit
+            res = dfs(i+1)
+            #if the next digit from where we are, is not the end of the string or if there is a next digit
+                # and the digit that we are at is a 1
+                #or the digit that we are at is a 2 and the next digit is in (0, 6)
+                #=> then we consider 2 digits => ith digit and i+1th digit. 
+                #So we start from i+2 for next sub problem
+            if (i+1 < len(s) and (s[i] == "1" or (s[i] == "2" and s[i+1] in "0123456"))): #2 digit number
+                res += dfs(i+2)
+            #cache the result
+            dp[i] = res
+            return res
+        return dfs(0)
