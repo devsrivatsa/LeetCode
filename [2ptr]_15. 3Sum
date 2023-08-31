@@ -1,0 +1,20 @@
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        result = []
+        for i,a in enumerate(nums):
+            if i > 0 and a == nums[i-1]: #this will avoid duplication
+                continue
+            l, r = i+1, len(nums)-1
+            while l < r:
+                s = a + nums[l] + nums[r]
+                if s > 0:
+                    r -= 1
+                elif s < 0:
+                    l += 1
+                else:
+                    result.append([a, nums[l], nums[r]])
+                    l += 1 #we do not want to update both pointers because these can end up pointing to the same numbers again if we have a symmetric looking array
+                    while nums[l] == nums[l-1] and l < r: #we want to keep moving the pointer until we have a different number in case there are multiple repeats
+                        l += 1 #we dont need to bother updating the right ptr as the previous conditions will take care of it. Here we just move left to find different combination summing to 0.
+        return result
