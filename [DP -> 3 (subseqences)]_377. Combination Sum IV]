@@ -1,0 +1,8 @@
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        dp = {0: 1} #target -> no of times it can be achieved
+        for total in range(1, target+1):
+            dp[total] = 0
+            for idx in range(len(nums)):
+                dp[total] += dp.get(total-nums[idx], 0)
+        return dp[target]
