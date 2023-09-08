@@ -1,0 +1,10 @@
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        win_size = len(needle)
+        l,r = 0, len(needle)-1
+        while l < len(haystack):
+            if haystack[l:r+1] == needle:
+                return l
+            l += 1
+            r += 1
+        return -1
