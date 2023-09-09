@@ -8,3 +8,25 @@ class Solution:
             l += 1
             r += 1
         return -1
+
+########################## Rust ##############################
+
+ impl Solution {
+    pub fn str_str(haystack: String, needle: String) -> i32 {
+        if needle == haystack { return 0 }
+        let (mut l, mut r):(usize, usize) = (0, needle.len()-1);
+        while r < haystack.len() {
+            let mut win = if l == (haystack.len() - needle.len()) {
+                haystack[l..].to_string() 
+            } else { 
+                haystack[l..r+1].to_string() 
+            };
+            if win == needle {
+                return l as i32
+            }
+            l += 1;
+            r += 1;
+        }
+        return -1
+    }
+}
