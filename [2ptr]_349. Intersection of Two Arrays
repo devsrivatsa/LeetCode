@@ -16,3 +16,30 @@ class Solution:
                 ptr2 += 1
             
         return res
+
+################################## Rust ##########################################
+
+use std::collections::HashSet;
+
+impl Solution {
+    pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
+        let (mut ptr1, mut ptr2):(usize, usize) = (0,0);
+        let mut arr1 = nums1.clone();
+        let mut arr2 = nums2.clone();
+        arr1.sort();
+        arr2.sort();
+        let mut res = HashSet::new();
+        while (ptr1 < arr1.len()) && (ptr2 < arr2.len()) {
+            if arr1[ptr1] == arr2[ptr2] { 
+                res.insert(arr1[ptr1]);
+                ptr1 += 1;
+                ptr2 += 1;
+            } else if arr1[ptr1] < arr2[ptr2] {
+                ptr1 += 1;
+            } else if arr2[ptr2] < arr1[ptr1] {
+                ptr2 += 1;
+            }
+        }
+        res.into_iter().collect()
+    }
+}
