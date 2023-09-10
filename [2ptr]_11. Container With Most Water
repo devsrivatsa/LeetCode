@@ -17,3 +17,27 @@ class Solution:
             else:
                 r -= 1
         return best_area
+
+
+############################# Rust ###################################
+
+use std::cmp;
+
+impl Solution {
+    pub fn max_area(height: Vec<i32>) -> i32 {
+        if height.len() == 2 { return *height.iter().min().unwrap() } //width would just be 1
+        let (mut l, mut r):(usize, usize) =  (0, height.len()-1);
+        let mut best_area = 0;
+        while l < r {
+            let curr_area = cmp::min(height[l], height[r])*(r-l) as i32;
+            best_area = cmp::max(curr_area, best_area);
+            if height[l] < height[r] {
+                l += 1;
+            } else {
+                r -= 1;
+            }            
+        }
+        best_area
+    }
+}
+
