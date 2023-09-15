@@ -1,0 +1,30 @@
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        nums.sort()
+        result, quad = [],[]
+        
+        #this is a general recursive solution for any value of k < len(nums)-2
+        def ksum(k, start_idx, target):
+            if k!=2:
+                for i in range(start_idx, len(nums)-k+1): #this -k+1 is optional but it will ensure that we have at least k-1 values left after choosing 1 value
+                    if i > start_idx and nums[i] == nums[i-1]:
+                        continue
+                    quad.append(nums[i]) #take
+                    ksum(k-1, i+1, target-nums[i])
+                    quad.pop() #dont_take
+                return #we want to return so that the function returns after adding the first 2 numbers
+            l,r = start_idx, len(nums)-1
+            while l<r:
+                s = nums[l] + nums[r]
+                if s > target:
+                    r -= 1
+                elif s < target:
+                    l += 1
+                else:
+                    result.append(quad + [nums[l], nums[r]])
+                    l+=1
+                    while nums[l] == nums[l-1] and l < r:
+                        l+=1
+        ksum(4, 0, target)
+        return result
+        
