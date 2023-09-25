@@ -1,0 +1,19 @@
+class Solution:
+    def reverse_part(self, part, k, arr):
+        return part[:k][::-1] + part[k:]
+    def reverseStr(self, s: str, k: int) -> str:
+        nc = len(s)
+        if nc == 1:
+            return s
+        arr = [i for i in s]
+        res = []
+        l,r = 0, 2*k
+        while l < len(arr):
+            if r >= len(s):
+                part = s[l:]
+            else:
+                part = s[l:r]
+            res.append(self.reverse_part(part, k, arr))
+            l = r
+            r += 2*k
+        return "".join(res)    
