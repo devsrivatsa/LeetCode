@@ -16,6 +16,7 @@ class Solution:
             max_win = max(max_win, r-l+1)
             r += 1
         return max_win
+
         
 ############### A bit more optimized - (avoid searching dictionary for max frequent character and count)##############        
 
