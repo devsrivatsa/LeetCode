@@ -18,3 +18,34 @@ class Solution:
             max_win = max(r-l+1, max_win)
         return max_win
         
+############################## Rust #######################################
+
+use std::cmp;
+use std::collections::HashMap;
+
+impl Solution {
+    pub fn length_of_longest_substring_k_distinct(s: String, k: i32) -> i32 {
+        //edge cases
+        if k == 0 { return 0 }
+        if s.len() == 1 { return 1 }
+
+        let mut sv:Vec<char> = s.chars().collect();
+        let mut hm:HashMap<char, i32> = HashMap::new();
+        let (mut l, mut r, mut max_win_size) = (0usize, 0usize, 0usize);
+        while r < s.len() {
+            //expand window
+            *hm.entry(sv[r].clone()).or_insert(0) += 1;
+
+            //condition
+            while hm.len() > k as usize {
+                hm.entry(sv[l].clone()).and_modify(|count| *count -=1);
+                if hm[&sv[l]] == 0 { hm.remove(&sv[l]); }
+                l += 1;
+            }
+            //calculate max_win_size and expand win
+            max_win_size = cmp::max(max_win_size, r-l+1);
+            r += 1
+        }
+        return max_win_size as i32
+    }
+}
