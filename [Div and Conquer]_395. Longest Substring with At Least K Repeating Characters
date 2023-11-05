@@ -1,0 +1,28 @@
+from collections import Counter
+
+class Solution:
+    #this is a divide and conquor problem - not a sliding window
+    def longestSubstring(self, s: str, k: int) -> int:
+        #edge case
+        if len(s)==0 or len(s) < k:
+            return 0
+        if k<=1:
+            return len(s)
+        
+        #common case    
+        counts = Counter(s)
+        l = 0
+        while (l < len(s) and counts[s[l]] >= k):
+            l += 1
+        if l >= len(s)-1:
+            return l
+
+        #first part of string
+        ls_1 = self.longestSubstring(s[0:l], k)
+        #just for optimization
+        while l < len(s) and counts[s[l]] < k:
+            l += 1
+        #second part of string
+        ls_2 = self.longestSubstring(s[l:], k) if l < len(s) else 0
+        
+        return max(ls_1, ls_2)
