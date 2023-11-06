@@ -33,3 +33,48 @@ def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
 #             for j in range(i+1,len(path)):
 #                 max_diff = max(max_diff, abs(path[i] - path[j]))
 #     return max_diff
+
+############################# Rust #################################
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+
+use std::cmp;    
+use std::rc::Rc;
+use std::cell::RefCell;
+
+impl Solution {
+    pub fn max_ancestor_diff(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+        fn dfs(root:Option<Rc<RefCell<TreeNode>>>, maxv:i32, minv:i32, maxdiff:i32) -> i32 {
+            match root {
+                Some(node) => {
+                    let node = node.borrow();
+                    let max_value = cmp::max(node.val, maxv);
+                    let min_value = cmp::min(node.val, minv);
+                    let max_diff = cmp::max(maxdiff, (max_value - min_value).abs());
+                    return cmp::max(
+                        dfs(node.left.clone(), max_value, min_value, max_diff),
+                        dfs(node.right.clone(), max_value, min_value, max_diff)
+                    )
+                },
+                None => maxdiff
+            }
+        }
+        return dfs(root, std::i32::MIN, std::i32::MAX, 0)
+    }
+}
