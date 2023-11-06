@@ -4,10 +4,10 @@ class Solution:
         def dfs(root):
             if not root:
                 return 0
-            lp = dfs(root.left)
-            rp = dfs(root.right)
-            diameters.append(lp+rp)
-            return 1+max(lp,rp)
+            lp = dfs(root.left) #we go left
+            rp = dfs(root.right) #we go right
+            diameters.append(lp+rp) #we then add the path length from left to right
+            return 1+max(lp,rp) #we add 1 to include the current node
         dfs(root)
         
         return max(diameters)
