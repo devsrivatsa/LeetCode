@@ -28,3 +28,57 @@ class Solution:
             return left_univ and right_univ and is_curr_univ, root.val
         is_univalued, _ = dfs(root)
         return is_univalued
+
+###################################### Rust #########################################
+// Definition for a binary tree node.
+// #[derive(Debug, PartialEq, Eq)]
+// pub struct TreeNode {
+//   pub val: i32,
+//   pub left: Option<Rc<RefCell<TreeNode>>>,
+//   pub right: Option<Rc<RefCell<TreeNode>>>,
+// }
+// 
+// impl TreeNode {
+//   #[inline]
+//   pub fn new(val: i32) -> Self {
+//     TreeNode {
+//       val,
+//       left: None,
+//       right: None
+//     }
+//   }
+// }
+
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    pub fn is_unival_tree(root: Option<Rc<RefCell<TreeNode>>>) -> bool {
+        fn dfs(root: Option<Rc<RefCell<TreeNode>>>) -> (bool, Option<i32>) {
+            if let Some(wrapped_node) = root {
+                let node = Rc::clone(&wrapped_node);
+                if node.borrow().left.is_none() && node.borrow().right.is_none() {
+                    return (true, Some(node.borrow().val));
+                }
+                let (is_left_univ, left_val) = dfs(node.borrow().left.clone());
+                let (is_right_univ, right_val) = dfs(node.borrow().right.clone());
+
+                let is_curr_subtree_univ = match (left_val, right_val) {
+                    (Some(left), Some(right)) => {
+                        left == node.borrow().val && right == node.borrow().val
+                    }
+                    (Some(left), None) => left == node.borrow().val,
+                    (None, Some(right)) => right == node.borrow().val,
+                    _ => false, // Both left and right are None
+                };
+
+                return (is_left_univ && is_right_univ && is_curr_subtree_univ, Some(node.borrow().val));
+            } else {
+                return (true, None);
+            }
+        }
+
+        let (is_univalued, _) = dfs(root);
+        return is_univalued;
+    }
+        
+}
