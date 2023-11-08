@@ -12,3 +12,19 @@ class Solution:
         if len(nodes) > 1:
             return False
         return True 
+
+######################### Better Solution ########################################
+
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        def dfs(root):
+            if not root:
+                return True, None
+            if not root.left and not root.right:
+                return True, root.val
+            left_univ, left_val = dfs(root.left)
+            right_univ, right_val = dfs(root.right)
+            is_curr_univ = (left_val == root.val and not right_val) or (right_val == root.val and not left_val) or (left_val == right_val == root.val)
+            return left_univ and right_univ and is_curr_univ, root.val
+        is_univalued, _ = dfs(root)
+        return is_univalued
