@@ -6,26 +6,26 @@
 #         self.right = None
 
 class Solution:
-    
-    def preorder(self, root):
-        res = []
-        if not root:
-            return [0]
-        
-        res.append(root.val)
-        res += self.preorder(root.left)
-        res += self.preorder(root.right)
-        
-        return res
-    def isSameTree(self, p, q) -> bool:
-        p_tree = self.preorder(p)
-        q_tree = self.preorder(q)
-        
-        if len(p_tree)==len(q_tree):
-            for i in range(len(q_tree)):
-                if p_tree[i] != q_tree[i]:
-                    return False
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
             return True
+        if (p and not q) or (q and not p):
+            return False
+        return p.val == q.val and self.isSameTree(p.right, q.right) and self.isSameTree(p.left, q.left)
+
+################################################ Rudt ##################################################
+
+use std::rc::Rc;
+use std::cell::RefCell;
+impl Solution {
+    pub fn is_same_tree(p: Option<Rc<RefCell<TreeNode>>>, q: Option<Rc<RefCell<TreeNode>>>) -> bool {
+        if p.is_none() && q.is_none() { return true }
+        if (p.is_none() && q.is_some()) || (p.is_some() && q.is_some()) { return false }
+        return (p.clone().unwrap() == q.clone().unwrap()) && 
+        Solution::is_same_tree(p.clone().unwrap().borrow().left.clone(), q.clone().unwrap().borrow().left.clone()) &&
+        Solution::is_same_tree(p.clone().unwrap().borrow().right.clone(), q.clone().unwrap().borrow().right.clone())
+    }
+}
                 
         
         
