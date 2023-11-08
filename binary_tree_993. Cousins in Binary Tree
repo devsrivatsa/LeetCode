@@ -39,4 +39,28 @@ class Solution:
                 return True
             else:
                 return False
-            
+
+################################################## Better Solution #######################################################################
+# I was high
+class Solution:
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        def get_details(root, target, depth, prev_node):
+            if not root:
+                return None, None
+            if root.val == target:
+                return prev_node, depth
+            lprev_node, ld = get_details(root.left, target, depth+1, root)
+            rprev_node, rd = get_details(root.right, target, depth+1, root)
+            if not lprev_node and not ld:
+                return rprev_node, rd
+            else:
+                return lprev_node, ld
+        
+        xparent, xdepth = get_details(root, x, 0, None)
+        yparent, ydepth = get_details(root, y, 0, None)
+
+        if xparent != yparent and xdepth == ydepth:
+            return True
+        else:
+            return False
+
