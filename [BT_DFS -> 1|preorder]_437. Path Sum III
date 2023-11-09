@@ -1,0 +1,18 @@
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        self.count = 0
+        freq = {0: 1}
+        def dfs(root, prevsum):
+            if not root:
+                return
+            currsum = prevsum + root.val
+            x = currsum - targetSum
+            if x in freq:
+                self.count += freq[x]
+            freq[currsum] = freq.get(currsum,0) + 1
+            dfs(root.left, currsum)
+            dfs(root.right, currsum)
+            freq[currsum] -= 1
+
+        dfs(root, 0)
+        return self.count
