@@ -1,0 +1,16 @@
+class Solution:
+    def checkEqualTree(self, root: Optional[TreeNode]) -> bool:
+        self.sums = []
+        def dfs(root, s):
+            if not root:
+                return 0
+            left = dfs(root.left, s)
+            right = dfs(root.right, s)
+            s += root.val + left + right 
+            self.sums.append(s)
+            return s
+        total = dfs(root, 0)
+        for s in self.sums[:-1]: #the last value is same as total. Hence we remove it
+            if s == (total - s):
+                return True
+        return False
