@@ -1,0 +1,48 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    def boundaryOfBinaryTree(self, root: Optional[TreeNode]) -> List[int]:
+        result = []
+        def addLeaves(root):
+            if not root:
+                return
+            addLeaves(root.left)
+            if not root.left and not root.right:
+                result.append(root.val)
+            addLeaves(root.right)
+
+        def addLeftBoundary(root):
+            if not root or (not root.right and not root.left):
+                return
+            result.append(root.val)
+            if root.left:
+                addLeftBoundary(root.left)
+            else:
+                addLeftBoundary(root.right)
+        
+        def addRightBoundary(root):
+            if not root or (not root.right and not root.left):
+                return
+            if root.right:
+                addRightBoundary(root.right)
+            else:
+                addRightBoundary(root.left)
+            result.append(root.val)
+        
+        if not root:
+            return
+        result.append(root.val)
+        addLeftBoundary(root.left)
+        addLeaves(root.left)
+        addLeaves(root.right)
+        addRightBoundary(root.right)
+
+        return result        
+
+
+        
