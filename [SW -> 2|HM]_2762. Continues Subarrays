@@ -1,0 +1,30 @@
+# Redundant Checks: The condition r-l+1 >= minSize and r-l+1 <= maxSize is redundant in the inner loop because the length of the substring will always be less than or equal to maxSize due to the outer while loop condition.
+
+# Optimization: A key insight for optimization is that the maximum frequency can only be achieved with a substring of length minSize. This is because if a longer substring appears more than once, so does every minSize substring contained within it. So, you only need to consider substrings of length minSize.
+
+class Solution:
+    def maxFreq(self, s: str, maxLetters: int, minSize: int, maxSize: int) -> int:
+        # Using a sliding window to check each substring of length minSize
+        letters = dict()
+        strings = dict()
+        l = 0
+
+        for r in range(len(s)):
+            # Add the current character to the letters dictionary
+            letters[s[r]] = letters.get(s[r], 0) + 1
+
+            # If the window size exceeds minSize, remove the leftmost character
+            if r - l + 1 > minSize:
+                letters[s[l]] -= 1
+                if letters[s[l]] == 0:
+                    del letters[s[l]]
+                l += 1
+
+            # If the window size is minSize and unique letters are within limit, count the substring
+            if r - l + 1 == minSize and len(letters) <= maxLetters:
+                substring = s[l:r+1]
+                strings[substring] = strings.get(substring, 0) + 1
+
+        # Return the max frequency of any valid substring, or 0 if no valid substrings exist
+        return max(strings.values()) if strings else 0
+        
