@@ -1,6 +1,7 @@
 # Redundant Checks: The condition r-l+1 >= minSize and r-l+1 <= maxSize is redundant in the inner loop because the length of the substring will always be less than or equal to maxSize due to the outer while loop condition.
-
+# Why is this the case? Consider a substring of length greater than minSize. If this longer substring appears multiple times, then any minSize length substring contained within it also appears the same number of times. Therefore, focusing on substrings of exactly minSize length is sufficient to find the maximum frequency
 # Optimization: A key insight for optimization is that the maximum frequency can only be achieved with a substring of length minSize. This is because if a longer substring appears more than once, so does every minSize substring contained within it. So, you only need to consider substrings of length minSize.
+# Hence Maintain a sliding window of size minSize. This simplifies the logic and reduces the complexity.
 
 class Solution:
     def maxFreq(self, s: str, maxLetters: int, minSize: int, maxSize: int) -> int:
