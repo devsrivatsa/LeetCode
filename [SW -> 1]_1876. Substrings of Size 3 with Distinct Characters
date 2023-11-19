@@ -1,0 +1,29 @@
+class Solution:
+    def countGoodSubstrings(self, s: str) -> int:
+        l,r,count = 0,3,0
+        while r <= len(s):
+            if len(s[l:r]) == len(set(s[l:r])):
+                count += 1
+            l += 1
+            r += 1
+        return count
+
+##################### Rust ############################
+
+use std::collections::HashSet;
+
+impl Solution {
+    pub fn count_good_substrings(s: String) -> i32 {
+        let (mut l, mut r, mut count) = (0usize, 3usize, 0i32);
+        while r <= s.len() {
+            let mut uniq_chars:HashSet<char> = s[l..r].to_string().chars().collect();
+            if uniq_chars.len() == s[l..r].len() {
+                count += 1;
+            }
+            l += 1;
+            r += 1;
+            
+        }
+        count
+    }
+}
