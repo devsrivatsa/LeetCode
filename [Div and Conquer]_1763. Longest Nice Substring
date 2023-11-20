@@ -1,0 +1,15 @@
+class Solution:
+    def longestNiceSubstring(self, s: str) -> str:
+        if len(s) < 2:
+            return ""
+        hs = set(s)
+        for i in range(len(s)):
+            if (s[i].lower() in hs) and (s[i].upper() in hs):
+                continue
+            else:
+                #the currrent char s[i] will not be part of solution because it does not have its uppercase or lowercase version in the string.
+                #hence we skip that char and look in previous and next part of the string 
+                prev = self.longestNiceSubstring(s[:i])
+                current = self.longestNiceSubstring(s[i+1:])
+                return prev if len(prev) >= len(current) else current
+        return s
