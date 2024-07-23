@@ -7,9 +7,8 @@ class Solution:
                 return 1
             if dp_arr[n] != -1:
                 return dp_arr[n]
-            dp_arr[n] = dp_helper(n-1) + dp_helper(n-2)
+            dp_arr[n] = dp_memo(n-1) + dp_memo(n-2)
             return dp_arr[n]
-        return dp_helper(n)
 
         def dp_tab(n:int) -> int:
             if n <=1:
@@ -20,6 +19,8 @@ class Solution:
                 prev2 = prev1
                 prev1 = curr
             return curr
+        
+        return dp_memo(n)
     
 ####################### Rust - Tabulation ########################
 impl Solution {
