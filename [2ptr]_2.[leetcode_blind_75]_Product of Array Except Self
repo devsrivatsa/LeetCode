@@ -1,0 +1,41 @@
+Prroblem Statement:
+You’re given an integer array, arr. Return a resultant array so that res[i] is equal to the product of all the elements of arr except arr[i].
+Write an algorithm that runs in O(n) time without using the division operation.
+
+Constraints:
+  - 2 ≤ arr.length ≤10^5
+  - −30 ≤ arr[i] ≤ 30
+  - The product of any prefix or suffix of arr is guaranteed to fit in a 32-bit integer.
+
+def product_except_self(nums):
+  res = [1]*len(nums)
+  l, r = 0, len(nums)-1
+  lprod, rprod = 1, 1
+  #while left and right ptrs are within bounds
+  while l <= len(nums)-1 and r >= 0:
+    #this is the value of result arr - product of arr without self (be patient till the algo ends) 
+    res[l] = res[l]*lprod
+    res[r] = res[r]*rprod
+    #update value of lprod and rprod
+    #lprod is the product of left side of array except the element pointed by left ptr
+    #rprod is the product of right side of array exvept the element pointed by right ptr
+    lprod = lprod * nums[l]
+    rprod = rprod * nums[r]
+    #decrement r and increment l
+    l, r = l+1, r-1 #now what happens when l==r? check the top condition
+  
+  return res
+
+###############################################################################################
+Solution summary: The solution can be summarized in the following steps:
+
+- Create a list with the same length as the input list, initialized with 1s.
+- Keep track of products on the left and right sides of the current element.
+- Use two pointers—one starting from the beginning and the other from the end of the list.
+- Multiply and update values in the output array based on accumulated products and current element values.
+- Move the pointers toward each other to process the entire list.
+###############################################################################################
+
+Time complexity: The time complexity of this solution is  O(n), since both the pointers simultaneously traverse the length of the array once.
+
+Space complexity: The space complexity of this solution is O(1), since it doesn’t use any additional array for computations but only constant additional space.
