@@ -1,0 +1,27 @@
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        diameters = []
+        def dfs(root):
+            if not root:
+                return 0
+            lp = dfs(root.left) #we go left
+            rp = dfs(root.right) #we go right
+            diameters.append(lp+rp) #we then add the path length from left to right
+            return 1+max(lp,rp) #we add 1 to include the current node
+        dfs(root)
+        
+        return max(diameters)
+
+#######################################################################################
+Solution summary:
+
+- Start with the assumption that the diameter is 0.
+- Calculate the diameter of the left sub-tree and right sub-tree of the root node using the following recursive process:
+- At a leaf node, the diameter and height with respect to its children is 0 and 1, respectively.
+- For a non-leaf node, calculate the heights as well as the diameters of the left and right sub-trees. If the diameter passes through this node, then the diameter is the sum of the heights of the two sub-trees. Otherwise, it is the greater of the diameters of the two sub-trees.
+- Update the diameter as the greater of two values: the sum of the heights of the left and right sub-trees, the greater of the diameters of the two sub-trees.
+#######################################################################################
+
+Time complexity: The time complexity will be O(n) because each of the tree’s nodes gets visited once, where n is the number of nodes in the tree.
+
+Space complexity: The space complexity will be O(n) because the recursive stack can grow up to O(n), where n is the number of nodes in the tree.
