@@ -1,0 +1,33 @@
+Problem Statement:
+Given the root node of a binary tree, transform the tree by swapping each node’s left and right subtrees, thus creating a mirror image of the original tree. Return the root of the transformed tree.
+
+Constraints:
+  - 0 ≤ Number of nodes in the tree ≤ 100
+  - −1000 ≤ Node.value ≤ 1000
+
+def mirror_binary_tree(root):
+    def dfs_postorder(root):
+        if not root:
+            return None
+        lst = dfs_postorder(root.left)
+        rst = dfs_postorder(root.right)
+        root.left, root.right = rst, lst
+        return root
+    
+    return dfs_postorder(root)
+
+##########################################################################
+Solution: 
+For this solution, we do a post-order (left, right, parent) traversal of the binary tree. The algorithm is as follows:
+- Perform post-order traversal on the left child of the root node.
+- Perform post-order traversal on the right child of the root node.
+- Swap the left and right children of the root node.
+
+##########################################################################
+Time complexity
+The time complexity of this solution is linear, O(n), where n is the number of nodes in the tree.
+Note: Every subtree needs to be mirrored, so we visit every node once. Because of that, the runtime complexity is 
+
+Space complexity
+The space complexity of this solution is O(h), where h is the height of the tree. This is because our recursive algorithm uses space on the call stack, which can grow to the height of the binary tree. 
+The complexity will be O(logn) for a balanced tree and O(n) for a degenerate tree.
