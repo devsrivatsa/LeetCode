@@ -25,3 +25,21 @@ class Solution:
             # if nums[0] is greater than the mid value then this means the smallest value is somewhere to the left
             else:
                 right=mid-1
+#############################################################################################################################
+
+class Solution:
+    def findMin(self, nums:List[int]) -> int:
+        min_val = 2000 #this is based on the constraint
+        l, r = 0, len(nums)-1
+        while l <= r:
+            #if we are on sorted portion, then we just have to look at the nums[l] for lowest value
+            if nums[l] < nums[r]:
+                min_val = min(min_val, nums[l]
+                break
+            m = (l + r) // 2
+            min_val = min(min_val, nums[m])
+            if nums[m] >= nums[l}:#m is on left sorted array: values to left of m are lower but since the array is rotated, the lowest values can be in other side. Hence we search right
+                l = m + 1 #search right side as 
+            else: # m in on right sorted array. Any value to right of m is greater than m. So we search left side of m.
+                r = m - 1 #search left side of array
+        return min_elm
