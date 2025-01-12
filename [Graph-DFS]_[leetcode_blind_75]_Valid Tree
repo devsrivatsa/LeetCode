@@ -1,0 +1,71 @@
+Problem Statement
+Given n as the number of nodes and an array of the edges of a graph, find out if the graph is a valid tree. The nodes of the graph are labeled from 
+0 to  n−1, and edges[i]=[x,y] represents an undirected edge connecting the nodes x and y of the graph.
+A graph is a valid tree when all the nodes are connected and there is no cycle between them.
+
+Input:
+n = 5
+edges = [[0, 1], [0, 2], [0, 3], [1, 4]]
+
+
+###################################################### Iterative Solution ########################################################################
+
+def valid_tree(n, edges):
+
+  if len(edges) != n-1: #this detects cycles
+    return False
+  
+  #create adjecency list as we are only given edges and number of nodes  
+  adj = {i:[] for i in range(n)}
+  for n1,n2 in edges:
+    adj[n1].append(n2)
+    adj[n2].append(n1)
+
+  #variables for dfs
+  visited = {0}
+  stack = [0]
+  
+  #dfs algo
+  while len(stack) > 0:
+    node = stack.pop()
+    for nei in adj[node]:
+      if nei not in visited:
+        visited.add(nei)
+        stack.append(nei)
+  
+  #the number of nodes in visited should be equal to total nodes given - n as we are visiting every node unless we already visited them in the past
+  return len(visited) == n
+
+
+###################################################### Recursive Solution ########################################################################
+
+class Solution:
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        if len(edges) > n-1:
+            return False
+        
+        adj = [[] for _ in range(n)]
+        for u,v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        visit = set()
+
+        #since this is undirected graph, the neighbors of each node can contain the nodes for which the current node is a neighbor.
+        #this is not to be counted as a cycle. Hence we want to keep track of previous node.
+        #if the neighbor node encountered is same as previous node, then we dont want to count it as a cycle
+        
+        def dfs(node, prev):
+            if node in visit:
+                return False
+            
+            visit.add(node)
+            for nei in adj[node]:
+                if nei==prev:
+                    continue
+                if not dfs(nei, node): #if dfs returns false, then we have detected a loop 
+                    return False
+            return True
+
+        #-1 is the default prev node
+        #the truth result of dfs() here will confirm that there are no cycles.
+        return dfs(0, -1) and len(visit) == n
