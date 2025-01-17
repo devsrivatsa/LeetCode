@@ -1,0 +1,44 @@
+Problem Statement:
+
+Given an n x n binary matrix grid, return the length of the shortest clear path in the matrix. If there is no clear path, return -1.
+
+A clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0)) to the bottom-right cell (i.e., (n - 1, n - 1)) such that:
+
+All the visited cells of the path are 0.
+All the adjacent cells of the path are 8-directionally connected (i.e., they are different and they share an edge or a corner).
+The length of a clear path is the number of visited cells of this path.
+
+################################################ BFS Solution #############################################################################
+
+from collections import deque
+
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        n = len(grid) #this is a n x n grid
+        q = deque([(0, 0, 1)]) #the first row, column is where we start the path. (row, column, length_traversed)
+        visited = set((0,0))
+       
+        #8 directions - right, left, up, down, right-up, left-up, down-right, down-left
+        directions = [
+         [0, 1], [0, -1], [-1, 0], [1, 0], [-1, 1], [-1, -1], [1, 1], [1, -1]
+        ]
+
+        while q:
+            row, col, l = q.popleft()
+            
+            #if the path is blocked or if this is out of bounds, dont traverse
+            if min(row,col) < 0 or max(row,col) >= n or grid[row][col] == 1:
+                continue
+            
+            if row == n-1 and col == n-1: #we've arrived to last block
+                return l
+            
+            for dir in directions:
+                new_r, new_c = row + dir[0], col + dir[1]
+                #if the newly calculated loction is not part of visited, then append to queue.
+                #Therefore, we never add previously visited location to q again
+                #we indiscriminately add new_r, new_c to queue as the out of bounds locations are filtered after the first step in loop.
+                if (new_r, new_c) not in visited:
+                    q.append((new_r, new_c, l+1))
+                    visited.add((new_r, new_c))
+        return -1
