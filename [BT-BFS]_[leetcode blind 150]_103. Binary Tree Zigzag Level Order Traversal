@@ -1,0 +1,31 @@
+from collections import deque
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        #edge case
+        if not root:
+            return []
+        #general case    
+        q = deque([root])
+        result = []
+        rev = False
+        while q:
+            qlen = len(q)
+            res = []
+            for _ in range(qlen):
+                node = q.popleft()
+                res.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            if rev:
+                result.append(res[::-1])
+            else:
+                result.append(res)
+            rev = not rev
+        
+        return result
+
+##############################################################################
+Time Complexity: O(N)
+Space Complexity: O(W) where W is the nuber of leaf nodes at the end, or in the widest level
