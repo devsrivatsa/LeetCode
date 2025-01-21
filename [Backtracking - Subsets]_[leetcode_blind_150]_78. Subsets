@@ -1,0 +1,26 @@
+################################ Recursive Solution with DFS ################
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        subset = []
+        def dfs(idx):
+            #if index is oob, then append subset
+            if idx >= len(nums):
+                result.append(subset.copy())
+                return
+
+            #choose and call
+            subset.append(nums[idx])
+            dfs(idx + 1)
+
+            #unchoose and call
+            subset.pop()
+            dfs(idx + 1)
+        
+        dfs(0)
+        return result
+
+###########################################################################
+Time Complexity: O(2^n) where n is len(nums)
+Space Complexity: O(n)
+###########################################################################
