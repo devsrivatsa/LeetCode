@@ -1,0 +1,35 @@
+Problem Statement:
+
+You are given an array nums of integers, which may contain duplicates. Return all possible subsets.
+The solution must not contain duplicate subsets. You may return the solution in any order.
+
+####################################################################################################
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        result = []
+        subset = []
+        def backtrack(idx):
+                
+            if idx >= len(nums):
+                result.append(subset[::])
+                return
+            
+            # First recursive tree: choose and recurse
+            subset.append(nums[idx])
+            backtrack(idx + 1)
+            
+            # Second recursive tree: unchoose and recurse
+            subset.pop()
+            
+            #we avoid forming duplicate subsets by checking the second subtree if item at idx is same as next item in array.
+            #If so, then in the next recursive call, the idx + 1 will yield the same result as this one.
+            #So we increment idx until we get the next unique element.
+            
+            while idx + 1 < len(nums) and nums[idx] == nums[idx + 1]:
+                idx += 1
+            backtrack(idx + 1)
+        
+        backtrack(0)
+        return result
