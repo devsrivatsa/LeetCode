@@ -1,0 +1,25 @@
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        def backtrack(perm, pick, nums):
+            if len(perm) == len(nums):
+                result.append(perm[::])
+                return
+            #we are trying to create a new permutation. So for every number in nums
+            for i in range(len(nums)):
+                #only if the number is not already picked
+                if not pick[i]:
+                    perm.append(nums[i]) #pick number
+                    pick[i] = True #mark as picked
+                    backtrack(perm, pick, nums) #explore other combinations with the picked number
+                    #after exploring, unmark the number to explore other permutations
+                    perm.pop() 
+                    pick[i] = False
+            
+        backtrack([], [False]*len(nums), nums)
+        return result
+
+########################################################################################################
+# permutation = n! permutations for n items
+# Time complexity: O(n!∗n)
+# Space complexity: O(n!∗n) for the output list as each subarray is of length n, and there are n factorial permutations
