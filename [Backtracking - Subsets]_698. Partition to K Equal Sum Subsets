@@ -1,0 +1,30 @@
+class Solution:
+    def canPartitionKSubsets(self, k: int, nums: List[int]) -> bool:
+        if k == 1:
+            return True
+        if sum(nums) % 2 != 0:
+            return False
+        target = sum(nums) // k
+        used = [False] * len(nums)
+
+        def backtrack(idx:int, k:int, subsetSum:int) -> bool:
+            #we are tracking how many elements are left to be added in the subarray. If it is 0, then we have reached the target subsets count
+            if k == 0:
+                return True
+            #when subset sum == target sum, decrement count and restart program
+            if subsetSum == target:
+                return backtrack(0, k-1, 0)
+
+            for j in range(idx, len(nums)):
+                #if the elm is aleady used in subset or if the subset sum is greater than target, we want to skip that elm
+                if used[j] or (nums[j] + subsetSum > target):
+                    continue
+                #choose that element, and explore other combinations. if we choose an element, we want to start exploration from that element => subsetSum = subsetSum + elm
+                used[j] = True
+                if backtrack(j + 1, k, subsetSum + nums[j]):
+                    return True #this will only return true if k == 0 => we have no more subsets to search
+                #unchoose - explore other combinations
+                used[j] = False
+            return False
+
+        return backtrack(0, k, 0)
