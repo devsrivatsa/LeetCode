@@ -1,0 +1,63 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        def backtrack(idx, subset, subsetSum):
+            if subsetSum == target:
+                result.append(subset[::])
+                return
+            if idx >= len(candidates) or subsetSum > target:
+                return
+            #choose element and explore decidion tree with chosen
+            subset.append(candidates[idx])
+            backtrack(idx, subset, subsetSum + candidates[idx])
+
+            #dont choose and explore decidion tree without the elm
+            subset.pop()
+            backtrack(idx + 1, subset, subsetSum) #idx + 1 and pop() ensures we dont explore combination with nums[idx]
+        
+        backtrack(0, [], 0)
+        return result
+################################################## Backtracking ############################################################################
+
+class Solution:
+    def combinationSum(self, nums: List[int], target: int) -> List[List[int]]:
+        result = []
+        def backtrack(subset, nums):
+            if sum(subset) == target and sorted(subset) not in result:
+                result.append(sorted(subset[::]))
+                return 
+            for i in range(len(nums)):
+                if sum(subset) + nums[i] > target:
+                    continue
+                #choose
+                subset.append(nums[i])
+                backtrack(subset, nums)
+                #unchoose
+                subset.pop()
+        backtrack([], nums)
+        return result
+
+########################################### Backtracking - Optinal ##########################################################################
+
+class Solution:
+    def combinationSum(self, nums: List[int], target: int) -> List[List[int]]:
+        nums.sort()
+        result = []
+        
+        #idx is the index from which we want to explore combinations, subset is the current list of items, subsetSum is the current subset sum
+        def backtrack(idx, subset, subsetSum):
+            if subsetSum == target:
+                result.append(subset[::])
+                return 
+            for i in range(idx, len(nums)):
+                if subsetSum + nums[i] > target:
+                    continue
+                #choose
+                subset.append(nums[i])
+                
+                #we want to explore from i onwards as we can have any number of duplicate elements. 
+                backtrack(i, subset, subsetSum + nums[i])
+                #unchoose
+                subset.pop()
+        backtrack(0, [], 0)
+        return result
