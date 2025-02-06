@@ -1,0 +1,49 @@
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        result = []
+        def backtrack(idx, subset, subsetSum):
+            if subsetSum == target:
+                result.append(subset[::])
+                return
+            if idx >= len(candidates) or subsetSum > target:
+                return
+            #choose
+            subset.append(candidates[idx])
+            backtrack(idx+1, subset, subsetSum + candidates[idx])
+
+            #unchoose
+            subset.pop()
+            #we avoid forming duplicate subsets by checking the second subtree if item at idx is same as next item in array.
+            #If so, then in the next recursive call, the idx + 1 will yield the same result as this one.
+            #So we increment idx until we get the next unique element.
+            while idx + 1 < len(candidates) and candidates[idx+1] == candidates[idx]:
+                idx += 1
+            backtrack(idx+1, subset, subsetSum)
+        
+        backtrack(0, [], 0)
+
+        return result
+
+######################################## Backtracking - Optimal #####################################################################
+
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
+        result = []
+        def backtrack(idx, subset, subsetSum):
+            if subsetSum == target:
+                result.append(subset[::])
+                return
+            for j in range(idx, len(candidates)):
+                if j > idx and candidates[j] == candidates[j-1]:
+                    continue
+                #choose element and explore combinations
+                if candidates[j] + subsetSum > target:
+                    break #because we are sorting the list at the beginning. Hence all elements hereafter will also be greater
+                
+                subset.append(candidates[j])
+                backtrack(j + 1, subset, subsetSum + candidates[j])
+                subset.pop()
+        
+        backtrack(0, [], 0)
+        return result
