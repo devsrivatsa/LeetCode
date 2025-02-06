@@ -1,0 +1,30 @@
+from collections import Counter
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        # by exploring all paths from counter, never will there be the same starting element at the beginning of any 2 paths in the permutation decision tree
+        counter = Counter(nums)
+        def dfs_backtrack(perm):
+            if len(perm) == len(nums):
+                result.append(perm[::])
+                return
+            #explore all paths
+            for k in counter:
+                #only if we haven't used all the same element (counts) in the current path, proceed with the exploration
+                if counter[k] > 0:
+                    #choose element and explore combinations
+                    perm.append(k)
+                    counter[k] -= 1
+                    dfs_backtrack(perm)
+
+                    #unchoose and explore
+                    perm.pop()
+                    counter[k] += 1
+        
+        dfs_backtrack([])
+        return result
+
+########################################################################################################################################################
+Time Complexity: O(n!)
+Space Complexity: O(n)
