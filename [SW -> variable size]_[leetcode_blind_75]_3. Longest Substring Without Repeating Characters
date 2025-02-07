@@ -1,21 +1,45 @@
 class Solution:
-    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
-        min_win = float("inf")
-        curr_sum = nums[0]
-        l,r=0,0
-        while r < len(nums)-1:
-            if curr_sum < target:
-                r+=1
-                curr_sum += nums[r]
-            else:
-                min_win = min(min_win, r-l+1)
-                curr_sum -= nums[l]
-                l+=1
-        if min_win == float("inf"):
-            min_win = 0
-        return min_win
-
-################################## Swift ####################################
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        #edge case
+        if len(s) <= 1:
+            return len(s)
+        
+        longest = 0
+        tracker = set()
+        l, r = 0, 0
+        while r < len(s):
+            #shrink window
+            while s[r] in tracker:
+                tracker.remove(s[l])
+                l += 1
+            tracker.add(s[r])
+            longest = max(longest, len(tracker))
+            #expand window
+            r += 1
+        return longest
+################################# Javascript ####################################
+class Solution {
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    lengthOfLongestSubstring(s) {
+        let longest = 0;
+        let tracker = new Set();
+        let l = 0;
+        let r = 0;
+        while (r < s.length) {
+            while (tracker.has(s[r])) {
+                tracker.delete(s[l]);
+                l += 1;
+            }
+            tracker.add(s[r]);
+            longest = Math.max(longest, r-l+1);
+            r += 1;
+        }
+        return longest;
+    }
+}
 ################################# Kotlin ####################################
 class Solution {
     fun lengthOfLongestSubstring(s: String): Int {
