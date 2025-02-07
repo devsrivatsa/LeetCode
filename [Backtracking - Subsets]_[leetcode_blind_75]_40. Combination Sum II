@@ -27,23 +27,28 @@ class Solution:
 
 ######################################## Backtracking - Optimal #####################################################################
 
+class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         candidates.sort()
         result = []
-        def backtrack(idx, subset, subsetSum):
-            if subsetSum == target:
+        def backtrack(idx, subset, subset_sum):
+            #basecase
+            if subset_sum == target:
                 result.append(subset[::])
                 return
+            #explore conbinations
             for j in range(idx, len(candidates)):
+                #if current element is same as previous element, skip - avoids duplicate combinations
                 if j > idx and candidates[j] == candidates[j-1]:
                     continue
-                #choose element and explore combinations
-                if candidates[j] + subsetSum > target:
-                    break #because we are sorting the list at the beginning. Hence all elements hereafter will also be greater
-                
+                #avoids exploration as all following elements will also be greater tban target
+                if subset_sum + candidates[j] > target:
+                    break
+                #choose
                 subset.append(candidates[j])
-                backtrack(j + 1, subset, subsetSum + candidates[j])
+                backtrack(j+1, subset, subset_sum + candidates[j]) #j + 1 continues the forloop in the subsequent function stack
+                #unchoose - poping the element ensures, the next iteration is an exploration of a combination without the element
                 subset.pop()
-        
+
         backtrack(0, [], 0)
         return result
