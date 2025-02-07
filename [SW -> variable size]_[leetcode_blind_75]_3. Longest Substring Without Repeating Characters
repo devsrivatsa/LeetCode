@@ -4,18 +4,16 @@ class Solution:
         if len(s) <= 1:
             return len(s)
         
-        longest = 0
+        l, longest = 0,0
         tracker = set()
-        l, r = 0, 0
-        while r < len(s):
+        for r in range(len(s)):
             #shrink window
             while s[r] in tracker:
                 tracker.remove(s[l])
                 l += 1
             tracker.add(s[r])
             longest = max(longest, len(tracker))
-            #expand window
-            r += 1
+
         return longest
 ################################# Javascript ####################################
 class Solution {
