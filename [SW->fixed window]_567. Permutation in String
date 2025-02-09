@@ -12,7 +12,18 @@ class Solution:
             r+=1
         return hm1 == hm2
 
-############################## Golang ############################################
+############################## If you dont want hashmaps (but sortng might add some extra work to time complexity) #########################
+class Solution:
+    def checkInclusion(self, s1:str, s2:str) -> bool:
+        l, r = 0, len(s1)
+        s1 = sorted([c for c in s1])
+        while r <= len(s2):
+            print(s2[l:r])
+            if sorted([c for c in s2[l:r]]) == s1:
+                return True       
+            l += 1
+            r += 1
+        return False
 
 ############################## Rust ##############################################
 use std::collections::HashMap;
