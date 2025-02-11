@@ -1,0 +1,46 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        ROWS, COLS = len(grid), len(grid[0])
+        visit = set()
+        max_area = 0
+        
+        #dfs
+        def dfs(row, col, area):
+            if (
+                row < 0 or col < 0 or row >= ROWS or col >= COLS
+                or (row, col) in visit \
+                or grid[row][col] == 0 \
+            ):
+                return 0
+            area += 1
+            visit.add((row, col))
+            for dr, dc in [[1,0],[-1,0],[0,1],[0,-1]]:
+                area = max(area, dfs(row + dr, col + dc, area))
+            return area
+
+        #bfs
+        def bfs(row, col, area=1):
+            q = collections.deque([(row, col)])
+            visit.add((row, col))
+            while q:
+                r, c = q.popleft()
+                for dr, dc in [[1,0],[-1,0],[0,1],[0,-1]]:
+                    nr, nc = r + dr, c + dc
+                    if (
+                        nr < 0 or nc < 0 or nr >= ROWS or nc >= COLS \
+                        or (nr, nc) in visit
+                        or grid[nr][nc] == 0
+                    ):
+                        continue
+                    q.append((nr, nc))
+                    visit.add((nr, nc))
+                    area += 1
+            return area
+        
+        for r in range(ROWS):
+            for c in range(COLS):
+                if grid[r][c] == 1 and (r, c) not in visit:
+                    #search for the largest area 
+                    # max_area = max(max_area, dfs(r, c, 0))
+                    max_area = max(max_area, bfs(r, c, 1))
+        return max_area
