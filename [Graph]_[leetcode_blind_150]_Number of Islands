@@ -1,0 +1,52 @@
+class Solution:
+    #for every piece of land, we want to check if there are neighboring lands - this makes it a bfs problem.
+    #we can also check if there a neighboring land below or above, this could be solved with dfs.
+    def numIslands(self, grid: List[List[str]]) -> int:
+        
+        islands = 0
+        nrows, ncols = len(grid), len(grid[0])
+        visit = set()
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]] #right left up down
+        
+        def dfs(row, col):
+            if (
+                min(row, col) < 0 or \
+                row >= nrows or \
+                col >= ncols or
+                (row, col) in visit or
+                grid[row][col] == "0"
+            ):
+                return
+            
+            visit.add((row, col))
+            for dr, dc in directions:
+                dfs(row + dr, col + dc)
+        
+        def bfs(row, col):
+            q = collections.deque()
+            q.append((row, col))
+            visit.add((row, col))
+            while q:
+                row, col = q.popleft() #this becomes an iterative dfs if we use pop()-(becomes a stack) instead of popleft()
+                for dr, dc in directions:
+                    r, c = row + dr, col + dc
+                    if (
+                        min(r, c) >= 0 and \
+                        r < nrows and \
+                        c < ncols and \
+                        (r, c) not in visit and \
+                        grid[r][c] == "1"
+                    ):
+                        q.append((r, c))
+                        visit.add((r, c))
+        #for each cell, dfs/bfs searches its neighbors to see if there are connected lands. If there are, then it just adds them to the visit set
+        #so we dont recount them again.  
+        for r in range(nrows):
+            for c in range(ncols):
+                if grid[r][c] == "1" and (r, c) not in visit:
+                    #bfs(r, c) 
+                    #or
+                    dfs(r, c)
+                    islands += 1
+        
+        return islands
