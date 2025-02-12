@@ -1,0 +1,79 @@
+class UnionFind:
+    def __init__(self, num_components):
+        self.rank = [1]*num_components
+        self.parent = [i for i in range(num_components)]
+    
+    def find(self, node):
+        ptr = node
+        while self.parent[ptr] != ptr:
+            grandparent = self.parent[self.parent[ptr]]
+            self.parent[ptr] = grandparent
+            ptr = self.parent[ptr]
+        return ptr
+    
+    def union(self, n1, n2):
+        p1, p2 = self.find(n1), self.find(n2)
+        if p1 == p2:
+            return False
+
+        if self.rank[p1] > self.rank[p2]:
+            self.parent[p2] = p1
+            self.rank[p1] += self.rank[p2]
+        else:
+            self.parent[p1] = p2
+            self.rank[p2] += self.rank[p1]
+        
+        return True
+
+class Solution:
+    
+    def union_find_solution(self, n:int, edges: List[List[int]]) -> int:
+        num_comp = n
+        uf = UnionFind(n)
+        for n1, n2 in edges:
+            if uf.union(n1, n2): 
+                num_comp -= 1
+        
+        return num_comp
+
+    
+    def bfs(node):
+        pass
+
+    # bfs and dfs solutions
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        num_comp = 0
+        visit = [False]*n
+        adj = [[] for _ in range(n)]
+        for u, v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        
+        def dfs(node):
+            for nei in adj[node]:
+                if not visit[nei]:
+                    visit[nei] = True
+                    dfs(nei)
+        
+        def bfs(node):
+            q = collections.deque([node])
+            visit[node] = True
+            while q:
+                node = q.popleft()
+                neighbors = adj[node]
+                for nei in neighbors:
+                    if not visit[nei]:
+                        visit[nei] = True
+                        q.append(nei)
+
+
+        for node in range(n):
+            if not visit[node]:
+                visit[node] = True
+                #bfs or dfs will explore through nodes and add them to visited if they belong to one connected component.
+                #if nodes are already added to visited, then for every successive node in range n, its neighbors will not be counted again
+                #the dfs and bfs exits after going through a connected component: i.e all connected nodes will be visited for that component
+                bfs(node)
+                num_comp += 1
+        
+        return num_comp
