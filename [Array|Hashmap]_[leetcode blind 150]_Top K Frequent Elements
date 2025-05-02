@@ -1,0 +1,20 @@
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        tracker = dict()
+        for n in nums:
+            tracker[n] = (tracker.get(n, (0, n))[0] + 1, n)
+        a = sorted(tracker.values(), reverse=True, key=lambda x: x[0])
+        return [v[1] for v in a[:k]]
+
+TC: O(nLog(n)) due to the sorting
+
+############################## JS Solution ###################################
+topKFrequent(nums, k) {
+    const tracker = {}
+    for (const n of nums) {
+        tracker[n] = (tracker[n] || 0) + 1;
+    }
+    const arr = Object.entries(tracker).map(([num, freq]) => [freq, parseInt(num)]);
+    arr.sort((a,b) => b[0]-a[0]);
+    return arr.slice(0,k).map(pair => pair[1]);
+}
