@@ -1,0 +1,74 @@
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        pairing = dict()
+        for w in strs:
+            t = "".join(sorted([i for i in w]))
+            if pairing.get(t,0)!=0:
+                pairing[t].append(w)
+            else:
+                pairing[t] = [w]
+        return pairing.values()
+
+TC: O(nLog(n) * m)
+where:
+    - m: size of the strs array
+    - n: size of the longest string
+
+############################################
+<Approach 2: using ascii values of chars>
+TC: O(n * m)
+where:
+    - m: size of the strs array
+    - n: size of the longest string
+
+from collections import defaultdict
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        if len(strs) == 1:
+            return [strs]
+        res = defaultdict(list)
+        for s in strs:
+            count = [0]*26
+            for c in s:
+                count[ord(c) - ord('a')] += 1
+            res[tuple(count)].append(s)
+        return list(res.values())
+
+
+
+########################################## JS Solution ############################################
+                                    
+
+var groupAnagrams = function(strs) {
+    pairings = {};
+    for (let w of strs) {
+        var temp = w.split('').sort().join('');
+        if (pairings[temp]!=undefined) {
+            pairings[temp].push(w);
+        } else {
+            pairings[temp] = [w];
+        }
+    }
+    return Object.values(pairings);
+    
+};
+
+####################################
+<Approach 2: using ascii values of chars>
+
+groupAnagrams(strs) {
+    const result = {};
+    for (let s of strs) {
+        const count = new Array(26).fill(0);
+        for (let c of s) {
+            count[c.charCodeAt(0) - 'a'.charCodeAt(0)] += 1;
+        }
+        const key = count.join(',');
+        if (!res[key]) {
+            res[key] = [];
+        }
+        res[key].push(s);
+    }
+    return Object.values(res);
+}
