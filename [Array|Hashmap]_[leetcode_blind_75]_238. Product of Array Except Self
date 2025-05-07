@@ -1,0 +1,128 @@
+Prroblem Statement:
+You’re given an integer array, arr. Return a resultant array so that res[i] is equal to the product of all the elements of arr except arr[i].
+Write an algorithm that runs in O(n) time without using the division operation.
+
+Constraints:
+  - 2 ≤ arr.length ≤10^5
+  - −30 ≤ arr[i] ≤ 30
+  - The product of any prefix or suffix of arr is guaranteed to fit in a 32-bit integer.
+
+def product_except_self(nums):
+  res = [1]*len(nums)
+  l, r = 0, len(nums)-1
+  lprod, rprod = 1, 1
+  #while left and right ptrs are within bounds
+  while l <= len(nums)-1 and r >= 0:
+    #this is the value of result arr - product of arr without self (be patient till the algo ends) 
+    res[l] = res[l]*lprod
+    res[r] = res[r]*rprod
+    #update value of lprod and rprod
+    #lprod is the product of left side of array except the element pointed by left ptr
+    #rprod is the product of right side of array exvept the element pointed by right ptr
+    lprod = lprod * nums[l]
+    rprod = rprod * nums[r]
+    #decrement r and increment l
+    l, r = l+1, r-1 #now what happens when l==r? check the top condition
+  
+  return res
+
+###############################################################################################
+Solution summary: The solution can be summarized in the following steps:
+
+- Create a list with the same length as the input list, initialized with 1s.
+- Keep track of products on the left and right sides of the current element.
+- Use two pointers—one starting from the beginning and the other from the end of the list.
+- Multiply and update values in the output array based on accumulated products and current element values.
+- Move the pointers toward each other to process the entire list.
+###############################################################################################
+
+Time complexity: The time complexity of this solution is  O(n), since both the pointers simultaneously traverse the length of the array once.
+
+Space complexity: The space complexity of this solution is O(1), since it doesn’t use any additional array for computations but only constant additional space.
+
+############################################################## The above sol doesn't work #####################################################################
+
+############ JS bruteforce ###############
+
+productExceptSelf(nums) {
+    let output = new Array(nums.length).fill(1);
+    for (let i=0; i < nums.length; i++) {
+        let prod=1;
+        for (let j=0; j<nums.length; j++) {
+            if (j==i) continue;
+            else prod *= nums[j];
+        }
+        output[i]=prod;
+    }
+    return output;
+}
+
+TC: O(n`2)
+SC: O(n)
+
+############ JS prefix postfix ###############
+
+Logic: 
+- arr[i] in prefix array is the product of all items except itself before i
+- arr[i] in postfix array is the product of all items except itself after i
+
+productExceptSelf(nums) {
+    const n = nums.length;
+    const res = new Array(n);
+    const pref = new Array(n);
+    const postf = new Array(n);
+
+    pref[0] = 1;
+    postf[n-1] = 1;
+
+    for (let i=1; i<n; i++) pref[i] = nums[i-1] * pref[i-1]; // -> pref[i] is product of all previous numbers in array except itself 
+    for (let i=n-2; i>=0; i--) postf[i] = nums[i+1]*postf[i+1];// -> postf[i] is product of all subsequent numbers in array except itself
+    for (let i=0; i<n; i++) res[i] = pref[i]*postf[i]; //-> res[i] is therefore product of all items before and after it except itself = pref[i]*postf[i]
+
+    return res
+}
+
+TC: O(n)
+sc: O(n) * 3 for prefix postfix and result arrays
+
+############ Python prefix postfix Optimized ###############
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        res = [1 for i in range(len(nums))]
+        for i in range(1, len(nums)):
+            res[i] = nums[i-1] * res[i-1] #prefix array - res[i] = product of all items before i
+        
+        postf = 1
+        for i in range(len(nums)-1, -1, -1):
+            res[i] *= postf
+            postf *= nums[i]
+        
+        return res
+
+TC: O(n)
+SC: O(n)
+
+############ Go prefix postfix Optimized ###############
+
+func productExceptSelf(nums []int) []int {
+    //create arr and fill it with 1
+    res := make([]int, len(nums))
+    for i := range nums { 
+        res[i] = 1
+    }
+    //calculate prefix
+    for i:=1; i<len(nums); i++ {
+        res[i] = res[i-1] * nums[i-1]
+    }
+    postfix := 1
+    //multiply prefix values in res with postfix values
+    for i := len(nums)-1; i>=0; i-- {
+        res[i] = postfix * res[i]
+        postfix = postfix * nums[i] 
+    }
+    return res
+}
+
+TC: O(n)
+SC: O(n)
